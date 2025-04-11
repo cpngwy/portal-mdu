@@ -3,10 +3,13 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
+use CodeIgniter\Events\Events;
 use CodeIgniter\HTTP\ResponseInterface;
+use App\Models\UserModel;
 use CodeIgniter\Shield\Entities\User;
-use CodeIgniter\Shield\Models\UserModel;
-use CodeIgniter\Shield\Auth;
+// use CodeIgniter\Shield\Models\UserModel;
+use CodeIgniter\Shield\Exceptions\ValidationException;
+use CodeIgniter\Shield\Validation\ValidationRules;
 
 class Users extends BaseController
 {
@@ -41,20 +44,89 @@ class Users extends BaseController
         return redirect()->to('admin/users')->with('message','Role assigned successfully')->with('add_class','bg-success');
     }
 
-    public function register()
+    public function new()
     {
-        $userModel = auth()->getProvider();
+        $data['title_header'] = 'User Registration';
+        $data['errors'] = ($this->session->errors) ? $this->session->errors : '';
+        $data['error'] = ($this->session->error) ? $this->session->error : '';
+        $data['message'] = ($this->session->message) ? $this->session->message : '';
+        return  view('theme/head')
+        .view('theme/sidebar')
+        .view('theme/header')
+        .view('Users/new', $data)
+        .view('theme/footer'); 
+    }
 
-        $newUser = new User([
-            'username' => 'foo-bar',
-            'email'    => '[email protected]',
-            'password' => 'secret plain text password',
-        ]);
+    public function register_user()
+    {
+        // Check if registration is allowed
+        // if (! setting('Auth.allowRegistration')) {
+        //     return redirect()->back()->withInput()
+        //         ->with('error', lang('Auth.registerDisabled'));
+        // }
 
-        $userModel->save($newUser);
+        $users = $this->getUserProvider();
 
-        $savedUser = $userModel->findById($userModel->getInsertID());
+        // Validate here first, since some things,
+        // like the password, can only be validated properly here.
+        $rules = $this->getValidationRules();
 
-        $userModel->addToDefaultGroup($savedUser);
+        if (! $this->validateData($this->request->getPost(), $rules, [], config('Auth')->DBGroup)) {
+            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+        }
+
+        // Save the user
+        $allowedPostFields = array_keys($rules);
+        $user              = $this->getUserEntity();
+        $user->fill($this->request->getPost($allowedPostFields));
+
+        // // Workaround for email only registration/login
+        // if ($user->username === null) {
+        //     $user->username = null;
+        // }
+
+        try {
+            $users->save($user);
+        } catch (ValidationException $e) {
+            return redirect()->back()->withInput()->with('errors', $users->errors());
+        }
+        // To get the complete user object with ID, we need to get from the database
+        $user = $users->findById($users->getInsertID());
+        // Add to default group
+        $users->addToDefaultGroup($user);
+        return redirect()->to('admin/users/new')->with('message','User has been created.')->with('add_class','bg-success');
+
+    }
+
+    /**
+     * Returns the User provider
+     */
+    protected function getUserProvider(): UserModel
+    {
+        $provider = model(setting('Auth.userProvider'));
+
+        assert($provider instanceof UserModel, 'Config Auth.userProvider is not a valid UserProvider.');
+
+        return $provider;
+    }
+
+    /**
+     * Returns the Entity class that should be used
+     */
+    protected function getUserEntity(): User
+    {
+        return new User();
+    }
+
+    /**
+     * Returns the rules that should be used for validation.
+     *
+     * @return array<string, array<string, list<string>|string>>
+     */
+    protected function getValidationRules(): array
+    {
+        $rules = new ValidationRules();
+
+        return $rules->getRegistrationRules();
     }
 }
