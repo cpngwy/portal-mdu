@@ -10,6 +10,8 @@ use CodeIgniter\Router\RouteCollection;
 $routes->get('/', 'Dashboard::index', ['filter'=>'auth']);
 $routes->get('no-access', 'AuthController::noAccess');
 $routes->get('admin/users', 'Users::index', ['filter' => 'auth']);
+$routes->get('admin/users/new', 'Users::new', ['filter' => 'auth']);
+$routes->post('admin/users/register', 'Users::register_user', ['filter' => 'auth']);
 $routes->get('admin/users/assign/(:num)/(:alpha)', 'Users::assignRole/$1/$2', ['filter' => 'auth']);
 
 service('auth')->routes($routes);

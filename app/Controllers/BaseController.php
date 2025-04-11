@@ -69,6 +69,7 @@ abstract class BaseController extends Controller
         helper('auth');
         helper('setting');
 
-        $this->session = service('session');
+        $this->request = \Config\Services::request();
+        $this->session = \Config\Services::session();
     }
 }
