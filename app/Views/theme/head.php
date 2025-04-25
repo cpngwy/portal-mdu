@@ -9,7 +9,8 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin 2 - Dashboard</title>
+    <title>Compaynet Srl</title>
+    <link rel="icon" type="image/x-icon" href="/themes/sb-admin-2-gh-pages/img/CPN-Fav-ICON.png">
 
     <!-- Custom fonts for this template-->
     <link href="/themes/sb-admin-2-gh-pages/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -17,6 +18,7 @@
 
     <!-- Custom styles for this template-->
     <link href="/themes/sb-admin-2-gh-pages/css/sb-admin-2.min.css" rel="stylesheet">
+
 
 </head>
 

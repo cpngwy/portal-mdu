@@ -18,11 +18,11 @@ class Dashboard extends BaseController
         // if (!auth()->user()->inGroup('admin')) {
         //     return redirect()->to('no-access');
         // }
-        
+        $data['active_sidebar'] = $this->session->active_sidebar;
         return  view('theme/head')
-                .view('theme/sidebar')
+                .view('theme/sidebar', $data)
                 .view('theme/header')
-                .view('Dashboard/index')
+                .view('Dashboard/index', $data)
                 .view('theme/footer');
     }
 }

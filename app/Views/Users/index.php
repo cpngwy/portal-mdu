@@ -45,8 +45,8 @@
                             <td><?= $user->email ?></td>
                             <td><?= implode(', ', $user->getGroups()) ?></td>
                             <td>
-                                <a href="<?= site_url('admin/users/assign/'.$user->id.'/admin') ?>" class="btn btn-primary">Make Admin</a>
-                                <a href="<?= site_url('admin/users/assign/'.$user->id.'/user') ?>" class="btn btn-secondary">Make User</a>
+                                <a href="<?= site_url('users/assign/'.$user->id.'/admin') ?>" class="btn btn-primary">Make Admin</a>
+                                <a href="<?= site_url('users/assign/'.$user->id.'/user') ?>" class="btn btn-secondary">Make User</a>
                             </td>
                         </tr>
                         <?php endforeach; ?>
