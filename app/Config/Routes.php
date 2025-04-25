@@ -18,6 +18,11 @@ $routes->get('seller/add', 'Seller::add', ['filter' => 'auth']);
 $routes->post('seller/store', 'Seller::store', ['filter' => 'auth']);
 $routes->get('seller/edit/(:num)', 'Seller::edit/$1', ['filter' => 'auth']);
 $routes->post('seller/update/(:num)', 'Seller::update/$1', ['filter' => 'auth']);
+$routes->get('buyer', 'Buyer::index', ['filter' => 'auth']);
+$routes->get('buyer/add', 'Buyer::add', ['filter' => 'auth']);
+$routes->post('buyer/store', 'Buyer::store', ['filter' => 'auth']);
+$routes->get('buyer/edit/(:num)', 'Buyer::edit/$1', ['filter' => 'auth']);
+$routes->post('buyer/update/(:num)', 'Buyer::update/$1', ['filter' => 'auth']);
 
 service('auth')->routes($routes);
 /**

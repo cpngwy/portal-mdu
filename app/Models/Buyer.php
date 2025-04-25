@@ -4,17 +4,17 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class Seller extends Model
+class Buyer extends Model
 {
-    protected $table            = 'sellers';
+    protected $table            = 'buyers';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
     protected $allowedFields    = [
-        'seller_code', 'name', 'piva', 'registration_id', 'api_key', 'country_code', 'city', 'state', 'zip_code', 'address_line1', 
-        'status', 'created_at', 'updated_at', 'deleted_at'
+        'buyer_code', 'name', 'piva', 'registration_id', 'country_code', 'city', 'state', 'zip_code', 'address_line1',
+        'status', 'created_date', 'updated_date', 'created_at', 'updated_at', 'deleted_at',
     ];
 
     protected bool $allowEmptyInserts = false;

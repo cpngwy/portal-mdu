@@ -74,8 +74,13 @@ abstract class BaseController extends Controller
         $this->request = \Config\Services::request();
         $this->session = \Config\Services::session();
         $this->uri = \Config\Services::uri();
-
-        // get Segment 2 for sidebar menu
+        // get user full name
+        if(auth()->user())
+        {
+            $user_full_name = auth()->user()->first_name . ' ' . auth()->user()->last_name;
+            $this->session->set('user_full_name', $user_full_name);
+        }
+            // get Segment 2 for sidebar menu
         $segment = (empty($this->uri->getSegment(1))) ? 'dashboard' : $this->uri->getSegment(1);
         // die($segment);
         $this->session->set('active_sidebar', $segment);

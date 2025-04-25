@@ -21,6 +21,7 @@ class Users extends BaseController
         
         $users = model(UserModel::class)->findAll();
         $data['users'] = $users;
+        $data['user_full_name'] = $this->session->user_full_name;
         $data['active_sidebar'] = $this->session->active_sidebar;
         $data['add_class'] = $this->session->add_class;
         $data['message'] = $this->session->message;

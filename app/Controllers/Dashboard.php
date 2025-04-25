@@ -14,10 +14,7 @@ class Dashboard extends BaseController
             return redirect()->to('login');
         }
         
-        // Ensure user has admin role
-        // if (!auth()->user()->inGroup('admin')) {
-        //     return redirect()->to('no-access');
-        // }
+        $data['user_full_name'] = $this->session->user_full_name;
         $data['active_sidebar'] = $this->session->active_sidebar;
         return  view('theme/head')
                 .view('theme/sidebar', $data)
