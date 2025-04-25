@@ -21,11 +21,12 @@ class Users extends BaseController
         
         $users = model(UserModel::class)->findAll();
         $data['users'] = $users;
+        $data['active_sidebar'] = $this->session->active_sidebar;
         $data['add_class'] = $this->session->add_class;
         $data['message'] = $this->session->message;
         $data['title_header'] = 'Users';
         return  view('theme/head')
-                .view('theme/sidebar')
+                .view('theme/sidebar', $data)
                 .view('theme/header')
                 .view('Users/index', $data)
                 .view('theme/footer');
@@ -41,17 +42,18 @@ class Users extends BaseController
         if ($user) {
             $user->addGroup($role);
         }
-        return redirect()->to('admin/users')->with('message','Role assigned successfully')->with('add_class','bg-success');
+        return redirect()->to('users')->with('message','Role assigned successfully')->with('add_class','bg-success');
     }
 
     public function new()
     {
         $data['title_header'] = 'User Registration';
+        $data['active_sidebar'] = $this->session->active_sidebar;
         $data['errors'] = ($this->session->errors) ? $this->session->errors : '';
         $data['error'] = ($this->session->error) ? $this->session->error : '';
         $data['message'] = ($this->session->message) ? $this->session->message : '';
         return  view('theme/head')
-        .view('theme/sidebar')
+        .view('theme/sidebar', $data)
         .view('theme/header')
         .view('Users/new', $data)
         .view('theme/footer'); 
@@ -94,7 +96,7 @@ class Users extends BaseController
         $user = $users->findById($users->getInsertID());
         // Add to default group
         $users->addToDefaultGroup($user);
-        return redirect()->to('admin/users/new')->with('message','User has been created.')->with('add_class','bg-success');
+        return redirect()->to('users/new')->with('message','User has been created.')->with('add_class','bg-success');
 
     }
 

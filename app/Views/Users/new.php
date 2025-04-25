@@ -44,7 +44,7 @@
                 <div class="card mx-4 mb-4">
                     <div class="card-header">Account Details</div>
                     <div class="card-body">
-                        <form action="<?= base_url('admin/users/register') ?>" method="post">
+                        <form action="<?= base_url('users/register') ?>" method="post">
                         <?= csrf_field() ?>
                             <!-- Form Group (email address)-->
                             <div class="mb-3">
@@ -88,7 +88,7 @@
                                 <input class="form-control" id="seller_code" name="seller_code" type="text" placeholder="Enter Seller Code for this user" value="">
                             </div>
                             <!-- Save changes button-->
-                            <button class="btn btn-primary" type="submit">Register</button>
+                            <button class="btn btn-primary justify-content-md-end" type="submit">Register</button>
                         </form>
                     </div>
                 </div>
