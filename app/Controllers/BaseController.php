@@ -63,13 +63,22 @@ abstract class BaseController extends Controller
     {
         // Do Not Edit This Line
         parent::initController($request, $response, $logger);
-
+        
         // Preload any models, libraries, etc, here.
         helper('form');
         helper('auth');
         helper('setting');
+        helper('text');
 
+        // load services
         $this->request = \Config\Services::request();
         $this->session = \Config\Services::session();
+        $this->uri = \Config\Services::uri();
+
+        // get Segment 2 for sidebar menu
+        $segment = (empty($this->uri->getSegment(1))) ? 'dashboard' : $this->uri->getSegment(1);
+        // die($segment);
+        $this->session->set('active_sidebar', $segment);
+        // var_dump($this->session);
     }
 }
