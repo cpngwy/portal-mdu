@@ -49,6 +49,7 @@ class Users extends BaseController
     public function new()
     {
         $data['title_header'] = 'User Registration';
+        $data['user_full_name'] = $this->session->user_full_name;
         $data['active_sidebar'] = $this->session->active_sidebar;
         $data['errors'] = ($this->session->errors) ? $this->session->errors : '';
         $data['error'] = ($this->session->error) ? $this->session->error : '';

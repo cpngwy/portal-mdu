@@ -23,6 +23,8 @@ $routes->get('buyer/add', 'Buyer::add', ['filter' => 'auth']);
 $routes->post('buyer/store', 'Buyer::store', ['filter' => 'auth']);
 $routes->get('buyer/edit/(:num)', 'Buyer::edit/$1', ['filter' => 'auth']);
 $routes->post('buyer/update/(:num)', 'Buyer::update/$1', ['filter' => 'auth']);
+$routes->get('factoring', 'Factoring::index', ['filter' => 'auth']);
+$routes->get('factoring/create', 'Factoring::create', ['filter' => 'auth']);
 
 service('auth')->routes($routes);
 /**

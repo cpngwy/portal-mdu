@@ -1,9 +1,9 @@
 <div class="content">
     <div class="container-fluid">
             
-        <h4 class="page-header-title mx-4 mb-4">
+        <h4 class="page-header-title">
             <div class="page-header-icon">
-                Register a <?= ucfirst($active_sidebar)?>
+                Create <?= ucfirst($active_sidebar)?>
             </div>
         </h4>
         <hr class="mt-0 mb-4">
@@ -14,16 +14,16 @@
             <div class="col-xl-8">
                 <div class="card mx-4 mb-4">
                     <div class="card-header"><?= ucfirst($active_sidebar)?> Details</div>
-                        <div class="card-body">
-                        <form method="post" action="<?= site_url('/seller/update/'.$seller['id']) ?>" class="row g-3">
-                            <?= csrf_field() ?>
-                            <?php include('form_fields.php') ?>
-                            <div class="col-md-12 text-right"><button type="submit" class="btn btn-primary mt-2">Update</button></div>
+                    <div class="card-body">
+                        <form action="<?= base_url('factoring/update/' . $factoring['id']) ?>" method="post" class="row g-3">
+                            <?= view('Factoring/form_fields', ['factoring' => $factoring]) ?>
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-success">Update</button>
+                            </div>
                         </form>
                     </div>
                 </div>
             </div>
         </div>
-        
     </div>
 </div>

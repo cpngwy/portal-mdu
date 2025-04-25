@@ -1,12 +1,14 @@
 <!-- Sidebar -->
-<ul class="navbar-nav bg-gray-900 sidebar sidebar-dark accordion" id="accordionSidebar">
+<ul class="navbar-nav bg-gradient-dark sidebar sidebar-dark accordion" id="accordionSidebar">
 <!-- Sidebar - Brand -->
 
 <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/">
-    <div class="sidebar-brand-icon rotate-n-15">
-        <i class="fas fa-laugh-wink"></i>
+    <div class="sidebar-brand-icon">
+        <!-- <i class="fas fa-laugh-wink"></i> -->
+         <img width="25px" src="/themes/sb-admin-2-gh-pages/img/CPN-Fav-ICON.png" alt="">
     </div>
-    <div class="sidebar-brand-text mx-3">Compaynet <sup>Srl</sup></div>
+    <!-- <div class="sidebar-brand-text mx-3">Compaynet</div> -->
+    <div class="sidebar-brand-text"><img width="140px" src="/themes/sb-admin-2-gh-pages/img/Compaynet_logo_no_icon.png" alt=""></div>
 </a>
 
 <!-- Divider -->
@@ -73,19 +75,17 @@
 
 <!-- Nav Item - Utilities Collapse Menu -->
 <li class="nav-item">
-    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
-        aria-expanded="true" aria-controls="collapseUtilities">
+    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#FactoringFacilities"
+        aria-expanded="true" aria-controls="FactoringFacilities">
         <i class="fas fa-fw fa-wrench"></i>
-        <span>Utilities</span>
+        <span>Factoring</span>
     </a>
-    <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
+    <div id="FactoringFacilities" class="collapse <?php echo ($active_sidebar == 'factoring') ? 'show' : '';?>" aria-labelledby="headingFactoringFacilities"
         data-parent="#accordionSidebar">
         <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Custom Utilities:</h6>
-            <a class="collapse-item" href="/themes/sb-admin-2-gh-pages/utilities-color.html">Colors</a>
-            <a class="collapse-item" href="/themes/sb-admin-2-gh-pages/utilities-border.html">Borders</a>
-            <a class="collapse-item" href="/themes/sb-admin-2-gh-pages/utilities-animation.html">Animations</a>
-            <a class="collapse-item" href="/themes/sb-admin-2-gh-pages/utilities-other.html">Other</a>
+            <h6 class="collapse-header">Factoring Facilities:</h6>
+            <a class="collapse-item" href="<?php echo site_url('factoring/create');?>">Create factoring</a>
+            <a class="collapse-item" href="<?php echo site_url('factoring');?>">Lists of factoring</a>
         </div>
     </div>
 </li>
