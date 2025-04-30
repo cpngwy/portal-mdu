@@ -4,6 +4,8 @@ namespace App\Controllers;
 
 use App\Controllers\BaseController;
 use App\Models\Buyer as BuyerModel;
+use App\Models\BuyerAddress as BuyerAddressModel;
+use App\Models\BuyerRepresentative as BuyerRepresentativeModel;
 use CodeIgniter\HTTP\ResponseInterface;
 
 class Buyer extends BaseController
@@ -52,10 +54,10 @@ class Buyer extends BaseController
             'piva'            => 'required|max_length[50]',
             'registration_id' => 'required|max_length[100]',
             'country_code'    => 'required|max_length[2]',
-            'city'            => 'required|max_length[50]',
-            'state'           => 'required|max_length[50]',
-            'zip_code'        => 'required|max_length[50]',
-            'address_line1'   => 'required|max_length[255]',
+            // 'city'            => 'required|max_length[50]',
+            // 'state'           => 'required|max_length[50]',
+            // 'zip_code'        => 'required|max_length[50]',
+            // 'address_line1'   => 'required|max_length[255]',
             'status'          => 'required|in_list[active,inactive]',
         ];
         $data = $this->request->getPost(array_keys($rules));
@@ -78,7 +80,11 @@ class Buyer extends BaseController
         $data['buyer'] = $this->session->buyer;
         $data['errors'] = $this->session->errors;
         $model = new BuyerModel();
+        $BuyerAddress = new BuyerAddressModel();
+        $BuyerRepresentatives = new BuyerRepresentativeModel(); 
+        $data['buyer_addresses'] = $BuyerAddress->where('buyer_id', $id)->findAll();
         $data['buyer'] = $model->find($id);
+        $data['buyer_representatives'] = $BuyerRepresentatives->where('buyer_id', $id)->findAll();
         return  view('theme/head')
                 .view('theme/sidebar', $data)
                 .view('theme/header')
