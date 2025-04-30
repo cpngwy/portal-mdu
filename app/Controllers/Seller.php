@@ -4,6 +4,8 @@ namespace App\Controllers;
 
 use App\Controllers\BaseController;
 use App\Models\Seller as SellerModel;
+use App\Models\SellerBuyer as SellerBuyerModel;
+use App\Models\Buyer as BuyerModel;
 use CodeIgniter\HTTP\ResponseInterface;
 
 class Seller extends BaseController
@@ -79,7 +81,11 @@ class Seller extends BaseController
         $data['seller'] = $this->session->seller;
         $data['errors'] = $this->session->errors;
         $model = new SellerModel();
+        $SellerBuyerModel = new SellerBuyerModel();
+        $BuyerModel = new BuyerModel();
         $data['seller'] = $model->find($id);
+        $data['seller_buyers'] = $SellerBuyerModel->where('seller_id', $id)->findAll();
+        $data['buyers'] = $BuyerModel->findAll();
         return  view('theme/head')
                 .view('theme/sidebar', $data)
                 .view('theme/header')
