@@ -7,6 +7,7 @@ use CodeIgniter\Router\RouteCollection;
  */
 // $routes->get('/', 'Home::index');
 
+
 $routes->get('/', 'Dashboard::index', ['filter'=>'auth']);
 $routes->get('no-access', 'AuthController::noAccess');
 $routes->get('users', 'Users::index', ['filter' => 'auth']);
@@ -25,6 +26,15 @@ $routes->get('buyer/edit/(:num)', 'Buyer::edit/$1', ['filter' => 'auth']);
 $routes->post('buyer/update/(:num)', 'Buyer::update/$1', ['filter' => 'auth']);
 $routes->get('factoring', 'Factoring::index', ['filter' => 'auth']);
 $routes->get('factoring/create', 'Factoring::create', ['filter' => 'auth']);
+$routes->get('factoring/edit/(:num)', 'Factoring::edit/$1', ['filter' => 'auth']);
+$routes->get('factoring/update/(:num)', 'Factoring::update/$1', ['filter' => 'auth']);
+$routes->post('factoring/store', 'Factoring::store', ['filter' => 'auth']);
+$routes->post('factoring/update/(:num)', 'Factoring::update/$1', ['filter' => 'auth']);
+$routes->post('factoringitem/store/(:num)', 'FactoringItem::store/$1', ['filter' => 'auth']);
+$routes->post('buyeraddress/store/(:num)', 'BuyerAddress::store/$1', ['filter' => 'auth']);
+$routes->post('buyerrepresentative/store/(:num)', 'BuyerRepresentative::store/$1', ['filter' => 'auth']);
+$routes->post('sellerbuyer/store/(:num)', 'SellerBuyer::store/$1', ['filter' => 'auth']);
+
 
 service('auth')->routes($routes);
 /**
