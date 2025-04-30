@@ -4,10 +4,13 @@
 
 <?= $this->section('main') ?>
 
-    <div class="container d-flex justify-content-center p-5">
+    <div class="container d-flex justify-content-center pt-5 mb-2">
         <div class="card col-12 col-md-5 shadow-sm">
             <div class="card-body">
-                <h5 class="card-title mb-5 text-center">Secured <?= lang('Auth.login') ?></h5>
+                <div class="mb-1 text-center">
+                    <img width="140px" src="/themes/sb-admin-2-gh-pages/img/Compaynet_logo_no_icon.png" alt="Compaynet Logo">
+                </div>
+                <h6 class="card-title mb-5 text-center">Secure <?= lang('Auth.login') ?></h6>
                 <?php if (session('error') !== null) : ?>
                     <div class="alert alert-danger" role="alert"><?= session('error') ?></div>
                 <?php elseif (session('errors') !== null) : ?>
@@ -65,6 +68,13 @@
                     <?php endif ?>
 
                 </form>
+            </div>
+        </div>
+    </div>
+    <div class="container d-flex justify-content-center">
+        <div class="col-12 col-md-5">
+            <div class="mb-1 text-center">
+                <span>Powered by:&nbsp;</span><img width="140px" src="/themes/sb-admin-2-gh-pages/img/Compaynet_logo_no_icon.png" alt="Compaynet Logo">
             </div>
         </div>
     </div>
