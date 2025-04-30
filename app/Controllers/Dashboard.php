@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
+use App\Models\UserModel;
 use CodeIgniter\HTTP\ResponseInterface;
 
 class Dashboard extends BaseController
@@ -13,11 +14,8 @@ class Dashboard extends BaseController
         if (!auth()->loggedIn()) {
             return redirect()->to('login');
         }
-        
-        // Ensure user has admin role
-        // if (!auth()->user()->inGroup('admin')) {
-        //     return redirect()->to('no-access');
-        // }
+
+        $data['user_full_name'] = $this->session->user_full_name;
         $data['active_sidebar'] = $this->session->active_sidebar;
         return  view('theme/head')
                 .view('theme/sidebar', $data)

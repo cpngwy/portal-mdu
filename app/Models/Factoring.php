@@ -4,17 +4,20 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class Seller extends Model
+class Factoring extends Model
 {
-    protected $table            = 'sellers';
+    protected $table            = 'factorings';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
     protected $allowedFields    = [
-        'seller_code', 'name', 'piva', 'registration_id', 'api_key', 'country_code', 'city', 'state', 'zip_code', 'address_line1', 
-        'status', 'created_at', 'updated_at', 'deleted_at'
+        'supplier_code', 'buyer_code', 'invoice_external_reference_id', 'currency',
+        'net_term', 'payment_method', 'total_discount_cents', 'invoice_issued_at',
+        'gross_amount_cents', 'language', 'invoice_url', 'file',
+        'owner_first_name', 'owner_last_name', 'owner_is_authorized', 'status', 
+        'created_at', 'updated_at'
     ];
 
     protected bool $allowEmptyInserts = false;
@@ -28,7 +31,7 @@ class Seller extends Model
     protected $dateFormat    = 'datetime';
     protected $createdField  = 'created_at';
     protected $updatedField  = 'updated_at';
-    protected $deletedField  = 'deleted_at';
+    protected $deletedField  = '';
 
     // Validation
     protected $validationRules      = [];

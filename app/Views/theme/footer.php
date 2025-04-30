@@ -1,5 +1,5 @@
 <!-- Footer -->
-<footer class="sticky-footer bg-white">
+<footer class="sticky-footer bg-white mt-4">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
                         <span>Copyright &copy; <img width="140px" src="/themes/sb-admin-2-gh-pages/img/compaynet_logo.png" alt=""> 2025</span>
@@ -39,6 +39,8 @@
         </div>
     </div>
 
+    <!-- Bootstrap popper.min.js -->
+    
     <!-- Bootstrap core JavaScript-->
     <script src="/themes/sb-admin-2-gh-pages/vendor/jquery/jquery.min.js"></script>
     <script src="/themes/sb-admin-2-gh-pages/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -55,7 +57,36 @@
     <!-- Page level custom scripts -->
     <script src="/themes/sb-admin-2-gh-pages/js/demo/chart-area-demo.js"></script>
     <script src="/themes/sb-admin-2-gh-pages/js/demo/chart-pie-demo.js"></script>
+    
+    <!-- tooltip -->
+    <script>
+    $(function () {
+        $(".se-pre-con").delay(500).fadeOut("slow");
+        $('[data-toggle="tooltip"]').tooltip()
+    })
 
+    $('.collapse-item').click(function(){
+        $(".se-pre-con").fadeIn(100);
+    });
+
+    $('.sidebar-brand-text').click(function(){
+        $(".se-pre-con").fadeIn(100);
+    });
+
+    $('a.btn').click(function(){
+        $(".se-pre-con").fadeIn(100);
+    });
+
+
+    function compute_items()
+    {
+        let net_price_per_item_cents = document.getElementById("net_price_per_item_cents").value;
+        let quantity = document.getElementById("quantity").value;
+        let item_tax_cents = document.getElementById("item_tax_cents").value;
+        let total = (parseFloat(net_price_per_item_cents) * parseFloat(quantity)) + parseFloat(item_tax_cents);
+        document.getElementById("net_price_cents").value = total;
+    }
+    </script>
 </body>
 
 </html>

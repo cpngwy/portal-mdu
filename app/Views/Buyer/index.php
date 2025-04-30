@@ -8,7 +8,7 @@
                 <table class="table table-bordered">
                     <thead>
                         <tr>
-                            <th>Seller Code</th>
+                            <th>Buyer Code</th>
                             <th>Name</th>
                             <th>P.IVA</th>
                             <th>Registration ID</th>
@@ -17,16 +17,16 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach($sellers as $seller): ?>
+                        <?php foreach($buyers as $buyer): ?>
                             <tr>
-                                <td><?= $seller['seller_code'] ?></td>
-                                <td><?= $seller['name'] ?></td>
-                                <td><?= $seller['piva'] ?></td>
-                                <td><?= $seller['registration_id'] ?></td>
-                                <td><?= $seller['status'] ?></td>
+                                <td><?= $buyer['buyer_code'] ?></td>
+                                <td><?= $buyer['name'] ?></td>
+                                <td><?= $buyer['piva'] ?></td>
+                                <td><?= $buyer['registration_id'] ?></td>
+                                <td><?= $buyer['status'] ?></td>
                                 <td>
-                                    <a href="/seller/edit/<?= $seller['id'] ?>" class="btn btn-sm btn-info">Edit</a>
-                                    <!-- <a href="/seller/delete/<?= $seller['id'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Delete?')">Delete</a> -->
+                                    <a href="/buyer/edit/<?= $buyer['id'] ?>" class="btn btn-sm btn-info">Edit</a>
+                                    <!-- <a href="/buyer/delete/<?= $buyer['id'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Delete?')">Delete</a> -->
                                 </td>
                             </tr>
                         <?php endforeach ?>
