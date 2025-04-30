@@ -69,6 +69,7 @@ abstract class BaseController extends Controller
         helper('auth');
         helper('setting');
         helper('text');
+        helper('date');
 
         // load services
         $this->request = \Config\Services::request();
@@ -77,13 +78,21 @@ abstract class BaseController extends Controller
         // get user full name
         if(auth()->user())
         {
+            if(empty($this->session->user_details)):
+                $user_data = auth()->user()->toArray();
+                $this->session->set('user_details', $user_data);
+            endif;
             $user_full_name = auth()->user()->first_name . ' ' . auth()->user()->last_name;
             $this->session->set('user_full_name', $user_full_name);
         }
-            // get Segment 2 for sidebar menu
-        $segment = (empty($this->uri->getSegment(1))) ? 'dashboard' : $this->uri->getSegment(1);
-        // die($segment);
-        $this->session->set('active_sidebar', $segment);
-        // var_dump($this->session);
+        
+        // get Segment 2 for sidebar menu
+        $segment_1 = (empty($this->uri->getSegment(1))) ? 'dashboard' : $this->uri->getSegment(1);
+        $this->session->set('active_sidebar', $segment_1);
+        if($this->uri->getSegment(1))
+        {
+            $segment_2 = (empty($this->uri->getSegment(2))) ? 'index' : $this->uri->getSegment(2);
+            $this->session->set('views_page', $segment_2);
+        }
     }
 }
