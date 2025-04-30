@@ -143,8 +143,8 @@
 
 <!-- Sidebar Message -->
 <div class="sidebar-card d-none d-lg-flex">
-    <img class="sidebar-card-illustration mb-2" width="90%" src="/themes/sb-admin-2-gh-pages/img/be90ab0-image.png" alt="...">
-    <p class="text-center mb-2">Powered by <strong>Mondu</strong></p>
+    <p class="text-center mb-2">Powered by </p>
+    <img class="sidebar-card-illustration mb-2" width="120" src="/themes/sb-admin-2-gh-pages/img/be90ab0-image.png" alt="...">
     <!-- <a class="btn btn-success btn-sm" href="https://startbootstrap.com/theme/sb-admin-pro">Upgrade to Pro!</a> -->
 </div>
 
