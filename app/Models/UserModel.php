@@ -16,8 +16,8 @@ class UserModel extends ShieldUserModel
             $this->allowedFields,
             'first_name', // Added
             'last_name',  // Added
-            'seller_code', // Added
-            'buyer_code',  // Added
+            'seller_id', // Added
+            'buyer_id',  // Added
         ];
     }
 }
