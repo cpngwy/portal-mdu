@@ -23,6 +23,7 @@ class Users extends BaseController
         $data['users'] = $users;
         $data['user_full_name'] = $this->session->user_full_name;
         $data['active_sidebar'] = $this->session->active_sidebar;
+        $data['views_page'] = $this->session->views_page;
         $data['add_class'] = $this->session->add_class;
         $data['message'] = $this->session->message;
         $data['title_header'] = 'Users';
@@ -51,6 +52,7 @@ class Users extends BaseController
         $data['title_header'] = 'User Registration';
         $data['user_full_name'] = $this->session->user_full_name;
         $data['active_sidebar'] = $this->session->active_sidebar;
+        $data['views_page'] = $this->session->views_page;
         $data['errors'] = ($this->session->errors) ? $this->session->errors : '';
         $data['error'] = ($this->session->error) ? $this->session->error : '';
         $data['message'] = ($this->session->message) ? $this->session->message : '';

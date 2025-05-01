@@ -17,6 +17,7 @@ class Dashboard extends BaseController
 
         $data['user_full_name'] = $this->session->user_full_name;
         $data['active_sidebar'] = $this->session->active_sidebar;
+        $data['views_page'] = $this->session->views_page;
         return  view('theme/head')
                 .view('theme/sidebar', $data)
                 .view('theme/header')
