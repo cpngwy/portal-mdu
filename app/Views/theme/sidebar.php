@@ -1,6 +1,6 @@
 <!-- Sidebar -->
-<ul class="navbar-nav bg-gradient-dark sidebar sidebar-dark accordion" id="accordionSidebar">
-<!-- Sidebar - Brand -->
+<ul class="navbar-nav bg-gradient-light sidebar accordion" id="accordionSidebar">
+<!-- Sidebar sidebar-light - Brand -->
 
 <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/">
     <div class="sidebar-brand-icon">
@@ -15,7 +15,7 @@
 <hr class="sidebar-divider my-0">
 
 <!-- Nav Item - Dashboard -->
-<li class="nav-item active">
+<li class="nav-item <?php echo ($active_sidebar == 'dashboard') ? 'active' : '';?>">
     <a class="nav-link" href="/">
         <i class="fas fa-fw fa-tachometer-alt"></i>
         <span>Dashboard</span></a>
@@ -28,7 +28,7 @@
 <div class="sidebar-heading">
     Interface
 </div>
-<li class="nav-item">
+<li class="nav-item <?php echo ($active_sidebar == 'users') ? 'active' : '';?>">
     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseOne"
         aria-expanded="true" aria-controls="collapseOne">
         <i class="fas fa-fw fa-user-circle"></i>
@@ -42,7 +42,7 @@
         </div>
     </div>
 </li>
-<li class="nav-item">
+<li class="nav-item <?php echo ($active_sidebar == 'seller') ? 'active' : '';?>">
     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
         aria-expanded="true" aria-controls="collapseTwo">
         <i class="fas fa-fw fa-users"></i>
@@ -57,7 +57,7 @@
     </div>
 </li>
 
-<li class="nav-item">
+<li class="nav-item <?php echo ($active_sidebar == 'buyer') ? 'active' : '';?>">
     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThree"
         aria-expanded="true" aria-controls="collapseThree">
         <i class="fas fa-fw fa-user"></i>
@@ -74,7 +74,7 @@
 
 
 <!-- Nav Item - Utilities Collapse Menu -->
-<li class="nav-item">
+<li class="nav-item <?php echo ($active_sidebar == 'factoring') ? 'active' : '';?>">
     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#FactoringFacilities"
         aria-expanded="true" aria-controls="FactoringFacilities">
         <i class="fas fa-fw fa-wrench"></i>
@@ -83,7 +83,7 @@
     <div id="FactoringFacilities" class="collapse <?php echo ($active_sidebar == 'factoring') ? 'show' : '';?>" aria-labelledby="headingFactoringFacilities"
         data-parent="#accordionSidebar">
         <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Factoring Facilities:</h6>
+            <h6 class="collapse-header">Factoring Facility:</h6>
             <a class="collapse-item" href="<?php echo site_url('factoring/create');?>">Create factoring</a>
             <a class="collapse-item" href="<?php echo site_url('factoring');?>">Lists of factoring</a>
         </div>
@@ -142,9 +142,9 @@
 </div>
 
 <!-- Sidebar Message -->
-<div class="sidebar-card d-none d-lg-flex">
-    <p class="text-center mb-2">Powered by </p>
-    <img class="sidebar-card-illustration mb-2" width="120" src="/themes/sb-admin-2-gh-pages/img/be90ab0-image.png" alt="...">
+<div class="sidebar-card d-none d-lg-flex bd-gray-700">
+    <p class="text-center mb-2 text-gray-900">Powered by </p>
+    <img class="sidebar-card-illustration mb-2" width="80" style="height: 15px;" src="/themes/sb-admin-2-gh-pages/img/mondu-new_logo.svg" alt="...">
     <!-- <a class="btn btn-success btn-sm" href="https://startbootstrap.com/theme/sb-admin-pro">Upgrade to Pro!</a> -->
 </div>
 
