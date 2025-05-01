@@ -5,7 +5,7 @@
 <?php if($views_page == 'create'):?>
 <div class="col-md-6">
     <label class="small mb-1">Supplier</label>
-    <select name="supplier_code" id="supplier_code" class="form-control" required>
+    <select name="supplier_code" id="supplier_code" class="tom-select-dropdown" required>
         <?php foreach($sellers as $seller):?>
         <option value="<?php echo $seller['seller_code'];?>"><?php echo $seller['name'];?></option>
         <?php endforeach;?>
@@ -13,7 +13,7 @@
 </div>
 <div class="col-md-6">
     <label class="small mb-1">Buyer</label>
-    <select name="buyer_code" id="buyer_code" class="form-control" required>
+    <select name="buyer_code" id="buyer_code" class="tom-select-dropdown-a" required>
         <?php foreach($buyers as $buyer):?>
         <option value="<?php echo $buyer['buyer_code'];?>"><?php echo $buyer['name'];?></option>
         <?php endforeach;?>
@@ -25,7 +25,7 @@
 </div>
 <div class="col-md-3">
     <label class="small mb-1">Language</label>
-    <select name="language" id="language" class="form-control" required>
+    <select name="language" id="language" class="tom-select-dropdown-b" required>
         <?php foreach($language as $lang):?>
             <option value="<?= $lang ?>"><?= $lang ?></option>
         <?php endforeach;?>
@@ -42,12 +42,12 @@
     <input type="datetime-local" name="invoice_issued_at" class="form-control" value="<?= $factoring['invoice_issued_at'] ?? ''?>" required>
 </div>
 <div class="col-md-3">
-    <label class="small mb-1">Total Discount (Cents)</label>
-    <input type="number" name="total_discount_cents" id="total_discount_cents" class="form-control" value="<?= $factoring['total_discount_cents'] ?? ''?>" required>
-</div>
-<div class="col-md-3">
     <label class="small mb-1">Gross Amount (Cents)</label>
     <input type="number" name="gross_amount_cents" id="gross_amount_cents" class="form-control" value="<?= $factoring['gross_amount_cents'] ?? ''?>" required>
+</div>
+<div class="col-md-3">
+    <label class="small mb-1">Total Discount (Cents)</label>
+    <input type="number" name="total_discount_cents" id="total_discount_cents" class="form-control" value="<?= $factoring['total_discount_cents'] ?? ''?>" required>
 </div>
 <div class="col-md-3">
     <label class="small mb-1">Currency</label>
@@ -57,7 +57,7 @@
 </div>
 <div class="col-md-3">
     <label class="small mb-1">Net Term</label>
-    <input type="number" name="net_term" class="form-control" value="<?= $factoring['net_term'] ?? ''?>" required>
+    <input type="number" name="net_term" id="net_term" class="form-control" value="<?= $factoring['net_term'] ?? ''?>" required>
 </div>
 <?php endif;?>
 <!-- end of create form -->
@@ -65,7 +65,7 @@
 <?php if($views_page == 'edit'):?>
     <div class="col-md-6">
     <label class="small mb-1">Supplier</label>
-    <select name="supplier_code" id="supplier_code" class="form-control" required>
+    <select name="supplier_code" id="supplier_code" class="form-control" readonly required>
         <?php foreach($sellers as $seller):?>
         <option value="<?php echo $seller['seller_code'];?>"><?php echo $seller['name'];?></option>
         <?php endforeach;?>
@@ -73,7 +73,7 @@
 </div>
 <div class="col-md-6">
     <label class="small mb-1">Buyer</label>
-    <select name="buyer_code" id="buyer_code" class="form-control" required>
+    <select name="buyer_code" id="buyer_code" class="form-control" readonly required>
         <?php foreach($buyers as $buyer):?>
         <option value="<?php echo $buyer['buyer_code'];?>"><?php echo $buyer['name'];?></option>
         <?php endforeach;?>
@@ -85,7 +85,7 @@
 </div>
 <div class="col-md-3">
     <label class="small mb-1">Language</label>
-    <select name="language" id="language" class="form-control" required>
+    <select name="language" id="language" class="tom-select-dropdown" required>
         <?php foreach($language as $lang):?>
             <option value="<?= $lang ?>"><?= $lang ?></option>
         <?php endforeach;?>
@@ -97,23 +97,23 @@
         <option value="invoice">Invoice</option>
     </select>
 </div>
-<div class="col-md-3">
-    <label class="small mb-1">Total Discount (Cents)</label>
-    <input type="number" name="total_discount_cents" class="form-control" value="<?= $factoring['total_discount_cents'] ?? ''?>" required>
-</div>
-<div class="col-md-3">
-    <label class="small mb-1">Gross Amount (Cents)</label>
-    <input type="number" name="gross_amount_cents" class="form-control" value="<?= $factoring['gross_amount_cents'] ?? ''?>" required>
-</div>
 <div class="col-md-6 mb-2">
     <label class="small mb-1">Currency</label>
     <select name="currency" id="currency" class="form-control" required>
         <option value="EUR">EUR</option>
     </select>
 </div>
-<div class="col-md-6">
+<div class="col-md-4">
+    <label class="small mb-1">Gross Amount (Cents)</label>
+    <input type="number" name="gross_amount_cents" class="form-control text-right" value="<?= $factoring['gross_amount_cents'] ?? ''?>" required>
+</div>
+<div class="col-md-4">
+    <label class="small mb-1">Total Discount (Cents)</label>
+    <input type="number" name="total_discount_cents" class="form-control text-right" value="<?= $factoring['total_discount_cents'] ?? ''?>" required>
+</div>
+<div class="col-md-4">
     <label class="small mb-1">Net Term</label>
-    <input type="number" name="net_term" class="form-control" value="<?= $factoring['net_term'] ?? ''?>" required>
+    <input type="number" name="net_term" class="form-control text-right" value="<?= $factoring['net_term'] ?? ''?>" required>
 </div>
 <div class="col-md-12 mx-auto mt-2">
     <div class="card">
@@ -184,7 +184,7 @@
         <div class="card-body row g-3">
             <div class="col-md-7">
                 <label class="small mb-1">Invoice file</label>
-                <input type="file" name="file" class="form-control" value="<?= $factoring['file'] ?? ''?>" required>
+                <input type="file" name="file" class="form-control" value="<?= $factoring['file'] ?? ''?>">
             </div>
             <div class="col-md-5">
                 <label class="small mb-1">Invoice Issued At</label>

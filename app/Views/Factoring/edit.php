@@ -20,7 +20,7 @@
                             <?= view('Factoring/form_fields', ['factoring' => $factoring, 'factoring_items_count' => $factoring_items_count]) ?>
                             <?php if($factoring_items_count > 0):?>
                             <div class="col-12 text-right mt-2">
-                                <button type="submit" class="btn btn-primary">Continue</button>
+                                <button type="submit" id="submit-btn" class="btn btn-primary">Continue</button>
                             </div>
                             <?php endif;?>
                         </form>
