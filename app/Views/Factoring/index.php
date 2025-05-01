@@ -5,7 +5,7 @@
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered table-striped">
+                <!-- <table class="table table-bordered table-striped">
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -32,6 +32,32 @@
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
+                </table> -->
+                <table id="example" class="display">
+                    <thead>
+                        <tr>
+                            <th>Reference Id</th>
+                            <th>Seller</th>
+                            <th>Buyer</th>
+                            <th>Gross Amount</th>
+                            <th>Currency</th>
+                            <th>Net Term</th>
+                            <th>Status</th>
+                            <th>Created</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th>Reference Id</th>
+                            <th>Seller</th>
+                            <th>Buyer</th>
+                            <th>Gross Amount</th>
+                            <th>Currency</th>
+                            <th>Net Term</th>
+                            <th>Status</th>
+                            <th>Created</th>
+                        </tr>
+                    </tfoot>
                 </table>
             </div>
         </div>

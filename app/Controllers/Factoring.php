@@ -24,7 +24,7 @@ class Factoring extends BaseController
 
         $data['user_full_name'] = $this->session->user_full_name;
         $data['active_sidebar'] = $this->session->active_sidebar;
-        // $data['add_class'] = $this->session->add_class;
+        $data['views_page'] = $this->session->views_page;
         $data['message'] = $this->session->message;
         $model = new FactoringModel();
         $data['factorings'] = $model->findAll();
@@ -37,16 +37,19 @@ class Factoring extends BaseController
 
     public function create()
     {
+        if (!auth()->loggedIn()) {
+            return redirect()->to('login');
+        }
+
         $seller_model = new SellerModel();
         $buyer_model = new BuyerModel();
         $seller_buyer_model = new SellerBuyerModel();
         $time = new Time();
-        $invoice_external_reference_id = $time->getYear().$time->getMonth().$time->getDay().'_'.random_string('alnum', 6).$time->getTimestamp();
+        $invoice_external_reference_id = sprintf('%s%s%s_%s%s', $time->getYear(), $time->getMonth(), $time->getDay(), random_string('alnum', 6), $time->getTimestamp());
         $data['views_page'] = $this->session->views_page;
         $data['user_full_name'] = $this->session->user_full_name;
         $data['active_sidebar'] = $this->session->active_sidebar;
         $data['factoring'] = $this->session->factoring;
-        // $data['add_class'] = $this->session->add_class;
         $data['message'] = $this->session->message;
         $data['errors'] = $this->session->errors;
         $data['invoice_external_reference_id'] = $invoice_external_reference_id;
@@ -61,18 +64,19 @@ class Factoring extends BaseController
 
     public function store()
     {   
+
         $validation = service('validation');
         $rules = [
             'supplier_code'     => 'required|min_length[3]|max_length[50]',
             'buyer_code'        => 'required|min_length[3]|max_length[50]',
-            'invoice_external_reference_id' => 'required|min_length[10]|max_length[255]',
-            'language'          => 'required|max_length[2]',
-            'payment_method'    => 'required|max_length[50]',
-            // 'invoice_issued_at' => 'required|valid_date',
+            'invoice_external_reference_id' => 'required|min_length[10]|max_length[255]|is_unique[factorings.invoice_external_reference_id]',
+            'language'                => 'required|max_length[2]',
+            'payment_method'          => 'required|max_length[50]',
+            'invoice_issued_at'       => 'required|valid_date',
             'total_discount_cents'    => 'required|numeric',
             'gross_amount_cents'      => 'required|numeric',
             'currency'          => 'required|max_length[3]',
-            'net_term'        => 'required|numeric'
+            'net_term'          => 'required|numeric'
         ];
         $data = $this->request->getPost(array_keys($rules));
         if (! $this->validateData($data, $rules)) {
@@ -98,6 +102,10 @@ class Factoring extends BaseController
 
     public function edit($id)
     {
+        if (!auth()->loggedIn()) {
+            return redirect()->to('login');
+        }
+
         $model = new FactoringModel();
         $seller_model = new SellerModel();
         $buyer_model = new BuyerModel();
@@ -147,16 +155,18 @@ class Factoring extends BaseController
         $factoring = $model->find($id);
         $factoringItem_model = new FactoringItemModel();
         $factoring_items = $factoringItem_model->where('factoring_id', $id)->findAll();
-        // body_parameters
-        $body_param['invoice_external_reference_id'] = $factoring['invoice_external_reference_id'];
-        $body_param['currency'] = $factoring['currency'];
-        $body_param['net_term'] = $factoring['net_term'];
-        $body_param['payment_method'] = $factoring['payment_method'];
-        $body_param['total_discount_cents'] = $factoring['total_discount_cents'] * 100;
-        // $body_param['invoice_issued_at'] = $factoring['invoice_issued_at'];
-        $body_param['gross_amount_cents'] = $factoring['gross_amount_cents'] * 100;
-        $body_param['language'] = $factoring['language'];
-        // $body_param['invoice_url'] = $factoring['invoice_url'];
+        // body parameters
+        $body_param = [
+            'invoice_external_reference_id' => $factoring['invoice_external_reference_id'],
+            'currency' => $factoring['currency'],
+            'net_term' => $factoring['net_term'],
+            'payment_method' => $factoring['payment_method'],
+            'total_discount_cents' => $factoring['total_discount_cents'] * 100,
+            'invoice_issued_at' => $factoring['invoice_issued_at'],
+            'gross_amount_cents' => $factoring['gross_amount_cents'] * 100,
+            'language' => $factoring['language'],
+            'invoice_url' => $factoring['invoice_url'],
+        ];
         // $filePath = FCPATH.'uploads/Invoice_2023102501.pdf';//fopen($filePath, 'r');
         // $body_param['file'] = $filePath;
         // Get buyer details
@@ -206,21 +216,52 @@ class Factoring extends BaseController
                 "first_name"    => $buyer_representative_details['first_name'],
                 "last_name"     => $buyer_representative_details['first_name']
         ]]];
-
+        
         $final_parameters = array_merge($body_param, $lines, $buyer, $billing, $shipping, $owner);
+        // Log the request parameters for debugging purposes
+        log_message('info', 'Request Parameters: ' . json_encode($final_parameters, JSON_PRETTY_PRINT));
+
         $seller_model = new SellerModel();
         $seller_details = $seller_model->where('seller_code', $factoring['supplier_code'])->first();
         $send = $this->sendPost($seller_details['api_key'], json_encode($final_parameters));
+        // Log the API response for debugging purposes
+        log_message('info', 'API Response: ' . json_encode($send, JSON_PRETTY_PRINT));
+
         if($send['status_code'] != 200):
             return redirect()->to('/factoring/edit/'.$id)
             ->with('parameters', json_encode($final_parameters))
             ->with('response', $send)
             ->with('errors', $send['data']);
         endif;
+
         return redirect()->to('/factoring/edit/'.$id)
         ->with('parameters', json_encode($final_parameters))
         ->with('response', $send['data'])
         ->with('message', 'Factoring has been updated!');
+    }
+
+    /**
+     * Return a list of buyers in json format, for datatables.
+     * 
+     * @return string
+     */
+    public function lists()
+    {
+        $model = new FactoringModel();
+        $factorings = $model->select('factorings.id, invoice_external_reference_id as external_reference_id, sellers.name seller_name, buyers.name buyer_name, gross_amount_cents gross_amount, currency, net_term, factorings.status, factorings.created_at')
+                        ->join('sellers', 'sellers.seller_code = factorings.supplier_code')
+                        ->join('buyers', 'buyers.buyer_code = factorings.buyer_code')
+                        ->findAll();
+        $TotalRecords = $model->countAllResults();
+        $data['recordsFiltered'] = $TotalRecords;
+        $data['data'] = [];
+        $x = 0;
+        foreach($factorings as $key => $value):
+
+            $data['data'][$key] = $value;
+        $x++;
+        endforeach;
+        echo json_encode($data);
     }
 
     private function toDateTimeString($from_data)
@@ -229,49 +270,41 @@ class Factoring extends BaseController
         return $time->toDateTimeString();
     }
 
-
     private function sendPost($api_key, $body)
     {
         $client = new Client();
         try {
-            $response = $client->request('POST', getenv('MONDU_ENDPOINT').'/factorings', [
+            $response = $client->request('POST', getenv('MONDU_ENDPOINT') . '/factorings', [
                 'headers' => [
                     'Api-Token' => $api_key,
-                    'Accept'        => 'application/json',
-                    'Content-Type'  => 'application/json',
+                    'Accept'    => 'application/json',
+                    'Content-Type' => 'application/json',
                 ],
                 'body' => $body,
             ]);
-            if(!in_array($response->getStatusCode(),[200, 201, 202])):
-                $responseBody = json_decode($response->getBody()->getContents());
+
+            $statusCode = $response->getStatusCode();
+            $responseBody = json_decode($response->getBody()->getContents());
+
+            if (!in_array($statusCode, [200, 201, 202])) {
                 return [
-                    "status_code" => $response->getStatusCode(),
-                    "data" => $responseBody->errors,
-                ];
-            endif;
-            return [
-                "status_code" => $response->getStatusCode(),
-                "data" => $response->getBody()->getContents()
-            ];
-        } catch (\GuzzleHttp\Exception\RequestException $e) {
-            if ($e->hasResponse()) {
-                $response = $e->getResponse();
-                $responseBody = json_decode($response->getBody()->getContents());
-                if(!in_array($response->getStatusCode(),[200, 201, 202])):
-                    return [
-                        "status_code" => $response->getStatusCode(),
-                        "data" => $responseBody->errors,
-                    ];
-                endif;
-                return [
-                    "status_code" => $response->getStatusCode(),
-                    "data" => $responseBody,
+                    'status_code' => $statusCode,
+                    'data'        => $responseBody->errors ?? $responseBody,
                 ];
             }
-            $responseBody = json_encode(['message' => $e->getMessage()]);
+
             return [
-                "status_code" => $e->getCode(),
-                "data" => $responseBody
+                'status_code' => $statusCode,
+                'data'        => $responseBody,
+            ];
+        } catch (\GuzzleHttp\Exception\RequestException $e) {
+            $response = $e->getResponse();
+            $statusCode = $response ? $response->getStatusCode() : $e->getCode();
+            $responseBody = $response ? json_decode($response->getBody()->getContents()) : ['message' => $e->getMessage()];
+
+            return [
+                'status_code' => $statusCode,
+                'data'        => $responseBody->errors ?? $responseBody,
             ];
         }
     }
