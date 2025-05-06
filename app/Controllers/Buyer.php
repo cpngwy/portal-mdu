@@ -7,6 +7,7 @@ use App\Models\Buyer as BuyerModel;
 use App\Models\BuyerAddress as BuyerAddressModel;
 use App\Models\BuyerRepresentative as BuyerRepresentativeModel;
 use CodeIgniter\HTTP\ResponseInterface;
+use CodeIgniter\I18n\Time;
 
 class Buyer extends BaseController
 {
@@ -15,7 +16,7 @@ class Buyer extends BaseController
         $model = new BuyerModel();
         $data['user_full_name'] = $this->session->user_full_name;
         $data['active_sidebar'] = $this->session->active_sidebar;
-        // $data['add_class'] = $this->session->add_class;
+        $data['views_page'] = $this->session->views_page;
         $data['message'] = $this->session->message;
         $data['buyers'] = $model->findAll();
         return  view('theme/head')
@@ -29,15 +30,12 @@ class Buyer extends BaseController
     {
         $data['user_full_name'] = $this->session->user_full_name;
         $data['active_sidebar'] = $this->session->active_sidebar;
-        // $data['add_class'] = $this->session->add_class;
+        $data['views_page'] = $this->session->views_page;
         $data['message'] = $this->session->message;
-        if($this->session->seller):
-            $data['buyer'] = $this->session->seller;
-        endif;
-        if($this->session->errors):
-            $data['errors'] = $this->session->errors;
-        endif;
-        $data['set_buyer_code'] = 'BC'.random_string('numeric', 10);
+        $data['buyer'] = $this->session->seller;
+        $data['errors'] = $this->session->errors;
+        $time = new Time();
+        $data['set_buyer_code'] = sprintf('%s%s%s', 'BC', random_string('alnum', 4), $time->getTimestamp());
         return  view('theme/head')
                 .view('theme/sidebar', $data)
                 .view('theme/header')
@@ -49,15 +47,11 @@ class Buyer extends BaseController
     {
         $validation = service('validation');
         $rules = [
-            'buyer_code'     => 'required|min_length[3]|max_length[100]',
+            'buyer_code'     => 'required|is_unique[buyers.buyer_code]',
             'name'            => 'required|min_length[3]|max_length[255]',
-            'piva'            => 'required|max_length[50]',
+            'piva'            => 'required|is_unique[buyers.piva]',
             'registration_id' => 'required|max_length[100]',
-            'country_code'    => 'required|max_length[2]',
-            // 'city'            => 'required|max_length[50]',
-            // 'state'           => 'required|max_length[50]',
-            // 'zip_code'        => 'required|max_length[50]',
-            // 'address_line1'   => 'required|max_length[255]',
+            'country_code'    => 'required|exact_length[2]',
             'status'          => 'required|in_list[active,inactive]',
         ];
         $data = $this->request->getPost(array_keys($rules));
@@ -76,6 +70,7 @@ class Buyer extends BaseController
     {
         $data['user_full_name'] = $this->session->user_full_name;
         $data['active_sidebar'] = $this->session->active_sidebar;
+        $data['views_page'] = $this->session->views_page;
         $data['message'] = $this->session->message;
         $data['buyer'] = $this->session->buyer;
         $data['errors'] = $this->session->errors;

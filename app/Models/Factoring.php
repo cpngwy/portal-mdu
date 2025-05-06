@@ -13,11 +13,11 @@ class Factoring extends Model
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
     protected $allowedFields    = [
-        'supplier_code', 'buyer_code', 'invoice_external_reference_id', 'currency',
+        'seller_id', 'buyer_id', 'invoice_external_reference_id', 'currency',
         'net_term', 'payment_method', 'total_discount_cents', 'invoice_issued_at',
         'gross_amount_cents', 'language', 'invoice_url', 'file',
         'owner_first_name', 'owner_last_name', 'owner_is_authorized', 'status', 
-        'created_at', 'updated_at'
+        'created_at', 'updated_at', 'created_by', 'updated_by'
     ];
 
     protected bool $allowEmptyInserts = false;

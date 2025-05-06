@@ -37,6 +37,12 @@
 
     <!-- Custom styles for this template-->
     <link href="/themes/sb-admin-2-gh-pages/css/sb-admin-2.min.css" rel="stylesheet">
+    
+    <!-- data table css -->
+    <link href="https://cdn.datatables.net/2.3.0/css/dataTables.dataTables.css" rel="stylesheet">
+
+    <!-- select2 css -->
+    <link href="https://cdn.jsdelivr.net/npm/tom-select@2.4.3/dist/css/tom-select.default.min.css" rel="stylesheet">
 
 
 </head>

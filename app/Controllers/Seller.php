@@ -15,7 +15,7 @@ class Seller extends BaseController
         $model = new SellerModel();
         $data['user_full_name'] = $this->session->user_full_name;
         $data['active_sidebar'] = $this->session->active_sidebar;
-        // $data['add_class'] = $this->session->add_class;
+        $data['views_page'] = $this->session->views_page;
         $data['message'] = $this->session->message;
         $data['sellers'] = $model->findAll();
         return  view('theme/head')
@@ -29,7 +29,7 @@ class Seller extends BaseController
     {
         $data['user_full_name'] = $this->session->user_full_name;
         $data['active_sidebar'] = $this->session->active_sidebar;
-        // $data['add_class'] = $this->session->add_class;
+        $data['views_page'] = $this->session->views_page;
         $data['message'] = $this->session->message;
         if($this->session->seller):
             $data['seller'] = $this->session->seller;
@@ -77,6 +77,7 @@ class Seller extends BaseController
     {
         $data['user_full_name'] = $this->session->user_full_name;
         $data['active_sidebar'] = $this->session->active_sidebar;
+        $data['views_page'] = $this->session->views_page;
         $data['message'] = $this->session->message;
         $data['seller'] = $this->session->seller;
         $data['errors'] = $this->session->errors;

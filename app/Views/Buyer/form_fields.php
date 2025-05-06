@@ -19,7 +19,7 @@ $country_codes = ['IT', 'DE', 'NL', 'GB'];
 ?>
 <div class="col-md-3">
     <label class="small mb-1" for="country_code">Country code</label>
-    <select name="country_code" class="form-control">
+    <select name="country_code" class="tom-select-dropdown">
     <?php foreach($country_codes as $country_code):?>    
     <option value="<?= $country_code?>" <?= (isset($buyer) && $buyer['country_code'] == $country_code) ? 'selected' : '' ?>><?= $country_code?></option>
     <?php endforeach;?>

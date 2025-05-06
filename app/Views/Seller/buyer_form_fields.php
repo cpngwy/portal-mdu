@@ -3,7 +3,7 @@
 ?>
 <div class="col-md-6">
     <label class="small mb-1" for="type">Buyer</label>
-    <select name="buyer_id" id="buyer_id" class="form-control">
+    <select name="buyer_id" id="buyer_id" class="tom-select-dropdown-a">
         <?php foreach($buyers as $buyer):?>
             <option value="<?= $buyer['id']?>"><?= $buyer['name']?></option>
         <?php endforeach;?>
