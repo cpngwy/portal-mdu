@@ -10,10 +10,15 @@ use CodeIgniter\Router\RouteCollection;
 
 $routes->get('/', 'Dashboard::index', ['filter'=>'auth']);
 $routes->get('no-access', 'AuthController::noAccess');
-$routes->get('users', 'Users::index', ['filter' => 'auth']);
-$routes->get('users/new', 'Users::new', ['filter' => 'auth']);
-$routes->post('users/register', 'Users::register_user', ['filter' => 'auth']);
-$routes->get('users/assign/(:num)/(:alpha)', 'Users::assignRole/$1/$2', ['filter' => 'auth']);
+$routes->get('user', 'Users::index', ['filter' => 'auth']);
+$routes->get('user/edit/(:num)', 'Users::edit/$1', ['filter' => 'auth']);
+$routes->post('user/update/(:num)', 'Users::update/$1', ['filter' => 'auth']);
+$routes->get('user/new', 'Users::new', ['filter' => 'auth']);
+$routes->post('user/register', 'Users::register_user', ['filter' => 'auth']);
+$routes->get('user/assign/(:num)/(:alpha)', 'Users::assignRole/$1/$2', ['filter' => 'auth']);
+$routes->post('user/update_seller_buyer/(:num)', 'Users::update_seller_buyer/$1', ['filter' => 'auth']);
+$routes->get('user/lists', 'Users::lists', ['filter' => 'auth']);
+$routes->post('user/lists', 'Users::lists', ['filter' => 'auth']);
 $routes->get('seller', 'Seller::index', ['filter' => 'auth']);
 $routes->get('seller/add', 'Seller::add', ['filter' => 'auth']);
 $routes->post('seller/store', 'Seller::store', ['filter' => 'auth']);
@@ -36,6 +41,8 @@ $routes->post('factoringitem/store/(:num)', 'FactoringItem::store/$1', ['filter'
 $routes->post('buyeraddress/store/(:num)', 'BuyerAddress::store/$1', ['filter' => 'auth']);
 $routes->post('buyerrepresentative/store/(:num)', 'BuyerRepresentative::store/$1', ['filter' => 'auth']);
 $routes->post('sellerbuyer/store/(:num)', 'SellerBuyer::store/$1', ['filter' => 'auth']);
+$routes->post('file/upload/(:num)/(:any)/(:any)', 'FileUpload::upload/$1/$2/$3', ['filter' => 'auth']);
+$routes->get('factoring/upload/(:num)', 'Factoring::upload/$1', ['filter' => 'auth']);
 
 
 service('auth')->routes($routes);
