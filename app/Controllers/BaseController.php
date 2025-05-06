@@ -70,6 +70,7 @@ abstract class BaseController extends Controller
         helper('setting');
         helper('text');
         helper('date');
+        helper('filesystem');
 
         // load services
         $this->request = \Config\Services::request();
@@ -78,10 +79,10 @@ abstract class BaseController extends Controller
         // get user full name
         if(auth()->user())
         {
-            if(empty($this->session->user_details)):
-                $user_data = auth()->user()->toArray();
-                $this->session->set('user_details', $user_data);
-            endif;
+            
+            $user_data = auth()->user()->toArray();
+            $this->session->set('user', $user_data);
+            
             $user_full_name = auth()->user()->first_name . ' ' . auth()->user()->last_name;
             $this->session->set('user_full_name', $user_full_name);
         }
