@@ -1,11 +1,20 @@
 <div class="content">
     <div class="container-fluid">
             
-        <h4 class="page-header-title">
-            <div class="page-header-icon">
-                Create factoring
+    <div class="row mt-4">
+            <div class="col-xl-2">
+                <h4 class="page-header-title">
+                    <div class="page-header-icon">
+                            Create <?= ucfirst($active_sidebar)?>
+                    </div>  
+                </h4>
             </div>
-        </h4>
+            <div class="col-xl-10 page-header-title">
+                <div class="page-header-icon text-right">
+                    <img class="img-fluid" src="/themes/sb-admin-2-gh-pages/img/custom-svg/undraw_printing-invoices_osgs.svg" height="120" width="90" alt="">
+                </div>
+            </div>
+        </div>
         <div class="row mt-4">
             <div class="col-xl-8">
                 <?php include('form_errors.php');?>

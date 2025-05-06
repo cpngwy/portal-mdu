@@ -5,17 +5,17 @@
 <?php if($views_page == 'create'):?>
 <div class="col-md-6">
     <label class="small mb-1">Supplier</label>
-    <select name="supplier_code" id="supplier_code" class="tom-select-dropdown" required>
+    <select name="seller_id" id="seller_id" class="tom-select-dropdown" required>
         <?php foreach($sellers as $seller):?>
-        <option value="<?php echo $seller['seller_code'];?>"><?php echo $seller['name'];?></option>
+        <option value="<?php echo $seller['id'];?>"><?php echo $seller['name'];?></option>
         <?php endforeach;?>
     </select>
 </div>
 <div class="col-md-6">
     <label class="small mb-1">Buyer</label>
-    <select name="buyer_code" id="buyer_code" class="tom-select-dropdown-a" required>
+    <select name="buyer_id" id="buyer_id" class="tom-select-dropdown-a" required>
         <?php foreach($buyers as $buyer):?>
-        <option value="<?php echo $buyer['buyer_code'];?>"><?php echo $buyer['name'];?></option>
+        <option value="<?php echo $buyer['id'];?>"><?php echo $buyer['name'];?></option>
         <?php endforeach;?>
     </select>
 </div>
@@ -65,17 +65,17 @@
 <?php if($views_page == 'edit'):?>
     <div class="col-md-6">
     <label class="small mb-1">Supplier</label>
-    <select name="supplier_code" id="supplier_code" class="form-control" readonly required>
+    <select name="seller_id" id="seller_id" class="form-control" readonly required>
         <?php foreach($sellers as $seller):?>
-        <option value="<?php echo $seller['seller_code'];?>"><?php echo $seller['name'];?></option>
+        <option value="<?php echo $seller['id'];?>"><?php echo $seller['name'];?></option>
         <?php endforeach;?>
     </select>
 </div>
 <div class="col-md-6">
     <label class="small mb-1">Buyer</label>
-    <select name="buyer_code" id="buyer_code" class="form-control" readonly required>
+    <select name="buyer_id" id="buyer_id" class="form-control" readonly required>
         <?php foreach($buyers as $buyer):?>
-        <option value="<?php echo $buyer['buyer_code'];?>"><?php echo $buyer['name'];?></option>
+        <option value="<?php echo $buyer['id'];?>"><?php echo $buyer['name'];?></option>
         <?php endforeach;?>
     </select>
 </div>

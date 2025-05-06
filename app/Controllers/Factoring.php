@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
+use App\Controllers\FileUpload;
 use App\Models\Factoring as FactoringModel;
 use App\Models\Seller as SellerModel;
 use App\Models\Buyer as BuyerModel;
@@ -24,7 +25,7 @@ class Factoring extends BaseController
 
         $data['user_full_name'] = $this->session->user_full_name;
         $data['active_sidebar'] = $this->session->active_sidebar;
-        $data['views_page'] = $this->session->views_page;
+        $data['views_page'] = 'index';
         $data['message'] = $this->session->message;
         $model = new FactoringModel();
         $data['factorings'] = $model->findAll();
@@ -53,8 +54,8 @@ class Factoring extends BaseController
         $data['message'] = $this->session->message;
         $data['errors'] = $this->session->errors;
         $data['invoice_external_reference_id'] = $invoice_external_reference_id;
-        $data['sellers'] = $seller_model->where('id', $this->session->user_details['seller_id'])->findAll();
-        $data['buyers'] =  $seller_buyer_model->select('*, buyers.buyer_code')->join('buyers', 'buyers.id = buyer_id')->where('seller_id', $this->session->user_details['seller_id'])->findAll();
+        $data['sellers'] = $seller_model->where('id', $this->session->user['seller_id'])->findAll();
+        $data['buyers'] =  $seller_buyer_model->select('*, buyers.buyer_code')->join('buyers', 'buyers.id = buyer_id')->where('seller_id', $this->session->user['seller_id'])->findAll();
         return  view('theme/head')
         .view('theme/sidebar', $data)
         .view('theme/header')
@@ -67,8 +68,8 @@ class Factoring extends BaseController
 
         $validation = service('validation');
         $rules = [
-            'supplier_code'     => 'required|min_length[3]|max_length[50]',
-            'buyer_code'        => 'required|min_length[3]|max_length[50]',
+            'seller_id'     => 'required',
+            'buyer_id'        => 'required',
             'invoice_external_reference_id' => 'required|min_length[10]|max_length[255]|is_unique[factorings.invoice_external_reference_id]',
             'language'                => 'required|max_length[2]',
             'payment_method'          => 'required|max_length[50]',
@@ -96,6 +97,8 @@ class Factoring extends BaseController
             endif;
             
         }
+
+        $data['created_by'] = $this->session->user['id'];
         $model->save($data);
         return redirect()->to('/factoring/edit/'.$model->getInsertID())->with('message', 'Factoring has been created, add items and continue.');
     }
@@ -123,10 +126,9 @@ class Factoring extends BaseController
         $data['buyers'] = $buyer_model->findAll();
         $data['factoring_items'] = $factoringItem_model->where('factoring_id', $id)->findAll();
         $data['factoring_items_count'] = $factoringItem_model->where('factoring_id', $id)->countAllResults();
-        $buyer_data = $buyer_model->where('buyer_code', $data['factoring']['buyer_code'])->first();
-        $data['buyer_address_billing'] = $buyer_address_model->where('buyer_id', $buyer_data['id'])->where('type', 'billing')->where('status', 'Active')->findAll();
-        $data['buyer_address_shipping'] = $buyer_address_model->where('buyer_id', $buyer_data['id'])->where('type', 'shipping')->where('status', 'Active')->findAll();
-        $data['buyer_representative'] = $buyer_representative_model->where('buyer_id', $buyer_data['id'])->where('status', 'Active')->findAll();
+        $data['buyer_address_billing'] = $buyer_address_model->where('buyer_id', $data['factoring']['buyer_id'])->where('type', 'billing')->where('status', 'Active')->findAll();
+        $data['buyer_address_shipping'] = $buyer_address_model->where('buyer_id', $data['factoring']['buyer_id'])->where('type', 'shipping')->where('status', 'Active')->findAll();
+        $data['buyer_representative'] = $buyer_representative_model->where('buyer_id', $data['factoring']['buyer_id'])->where('status', 'Active')->findAll();
         return  view('theme/head')
         .view('theme/sidebar', $data)
         .view('theme/header')
@@ -145,12 +147,14 @@ class Factoring extends BaseController
             return redirect()->to('/factoring/edit/'.$id)
                     ->with('errors', $this->validator->getErrors());
         }
+
         $model = new FactoringModel();
         $buyer_model = new BuyerModel();
         $buyer_address_model = new BuyerAddressModel();
         $buyer_representative_model = new BuyerRepresentativeModel();
         $data = $this->request->getPost();
         $data['owner_is_authorized'] = $this->request->getPost('owner_is_authorized') === 'on' ? 1 : 0;
+        $data['updated_by'] = $this->session->user['id'];
         $model->update($id, $data);
         $factoring = $model->find($id);
         $factoringItem_model = new FactoringItemModel();
@@ -170,12 +174,27 @@ class Factoring extends BaseController
         // $filePath = FCPATH.'uploads/Invoice_2023102501.pdf';//fopen($filePath, 'r');
         // $body_param['file'] = $filePath;
         // Get buyer details
-        $buyer_details = $buyer_model->where('buyer_code', $factoring['buyer_code'])->first();
+        $buyer_details = $buyer_model->where('id', $factoring['buyer_id'])->first();
         // lines parameters
-        $lines = ["lines" => [[
-            "line_items" => [["quantity" => $factoring_items[0]['quantity'], "external_reference_id" => $factoring_items[0]['external_reference_id'], "title" => $factoring_items[0]['title'], "net_price_per_item_cents" => $factoring_items[0]['net_price_per_item_cents'] * 100, "tax_cents" => $factoring_items[0]['item_tax_cents'] * 100, "net_price_cents" => $factoring_items[0]['net_price_cents'] * 100]],
-            "discount_cents" => $factoring_items[0]['discount_cents'] * 100, "shipping_price_cents" => $factoring_items[0]['shipping_price_cents'] * 100,
-        ]]];
+        $lines = [];
+        $i = 0;
+        foreach($factoring_items as $factoring_item):
+
+            $lines['lines'][$i] = $data['lines'][$i] = [
+                'line_items' => [[
+                    'quantity' => $factoring_item['quantity'],
+                    'external_reference_id' => $factoring_item['external_reference_id'],
+                    'title' => $factoring_item['title'],
+                    'net_price_per_item_cents' => $factoring_item['net_price_per_item_cents'] * 100,
+                    'tax_cents' => $factoring_item['item_tax_cents'] * 100,
+                ]],
+                'net_price_cents' => $factoring_item['net_price_per_item_cents'] * 100,
+                'discount_cents' => $factoring_item['discount_cents'] * 100,
+                'shipping_price_cents' => $factoring_item['shipping_price_cents'] * 100,
+            ];
+            $i++;
+
+        endforeach;
         
         // billing parameters
         $billing = [];
@@ -222,7 +241,7 @@ class Factoring extends BaseController
         log_message('info', 'Request Parameters: ' . json_encode($final_parameters, JSON_PRETTY_PRINT));
 
         $seller_model = new SellerModel();
-        $seller_details = $seller_model->where('seller_code', $factoring['supplier_code'])->first();
+        $seller_details = $seller_model->where('id', $factoring['seller_id'])->first();
         $send = $this->sendPost($seller_details['api_key'], json_encode($final_parameters));
         // Log the API response for debugging purposes
         log_message('info', 'API Response: ' . json_encode($send, JSON_PRETTY_PRINT));
@@ -249,8 +268,8 @@ class Factoring extends BaseController
     {
         $model = new FactoringModel();
         $factorings = $model->select('factorings.id, invoice_external_reference_id as external_reference_id, sellers.name seller_name, buyers.name buyer_name, gross_amount_cents gross_amount, currency, net_term, factorings.status, factorings.created_at')
-                        ->join('sellers', 'sellers.seller_code = factorings.supplier_code')
-                        ->join('buyers', 'buyers.buyer_code = factorings.buyer_code')
+                        ->join('sellers', 'sellers.id = factorings.seller_id')
+                        ->join('buyers', 'buyers.id = factorings.buyer_id')
                         ->findAll();
         $TotalRecords = $model->countAllResults();
         $data['recordsFiltered'] = $TotalRecords;
@@ -262,6 +281,25 @@ class Factoring extends BaseController
         $x++;
         endforeach;
         echo json_encode($data);
+    }
+
+    public function upload($id)
+    {
+        if (!auth()->loggedIn()) {
+            return redirect()->to('login');
+        }
+        $factoring_model = new FactoringModel();
+        $data['factoring'] = $factoring_model->where('id', $id)->first();
+        $data['views_page'] = $this->session->views_page;
+        $data['user_full_name'] = $this->session->user_full_name;
+        $data['active_sidebar'] = $this->session->active_sidebar;
+        $data['message'] = $this->session->message;
+        $data['errors'] = $this->session->errors;
+        return  view('theme/head')
+        .view('theme/sidebar', $data)
+        .view('theme/header')
+        .view('Factoring/upload', $data)
+        .view('theme/footer');
     }
 
     private function toDateTimeString($from_data)
