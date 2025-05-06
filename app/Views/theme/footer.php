@@ -2,7 +2,10 @@
             <footer class="sticky-footer bg-gradient-light mt-4">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; <img width="140px" src="/themes/sb-admin-2-gh-pages/img/compaynet_logo.png" alt=""> 2025</span>
+                        <span><img width="140px" src="/themes/sb-admin-2-gh-pages/img/compaynet_logo.png" alt=""> 2025</span>
+                    </div>
+                    <div class="text-center my-2">
+                        <span>Contact Us: <a href="mailto:administration@compaynet.com" class="href">administration@compaynet.com</a></span>
                     </div>
                 </div>
             </footer>
@@ -59,7 +62,7 @@
     <!-- Page level custom scripts -->
     <script src="/themes/sb-admin-2-gh-pages/js/demo/chart-area-demo.js"></script>
     <script src="/themes/sb-admin-2-gh-pages/js/demo/chart-pie-demo.js"></script>
-    <?php if($active_sidebar == 'factoring' && $views_page == 'index'):?>
+    <?php if(($active_sidebar == 'factoring' || $active_sidebar == 'dashboard' || $active_sidebar == 'user') && ($views_page == 'index')):?>
     <!-- Page level plugins -->
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script src="https://cdn.datatables.net/2.3.0/js/dataTables.js"></script>
@@ -178,10 +181,10 @@
 
     }
     // if index page
-    <?php if($active_sidebar == 'factoring' && $views_page == 'index'):?>
+    <?php if(($active_sidebar == 'factoring' || $active_sidebar == 'dashboard') && ($views_page == 'index')):?>
     // DataTable
     // id, sellers.name, buyers.name, net_term, currency, status, created_at
-    new DataTable('#example', {
+    new DataTable('#factoring-lists', {
         ajax: '<?php echo base_url('/factoring/lists');?>',
         layout: {
             topStart: {
@@ -207,6 +210,46 @@
                 if(type === 'display'){
                    return $('<a>')
                       .attr('href', '/factoring/edit/' + row.id)
+                      .text(data)
+                      .wrap('<div></div>')
+                      .parent()
+                      .html();
+
+                } else {
+                   return data;
+                }
+             }
+          } 
+       ]
+    });
+    <?php endif;?>
+    <?php if(($active_sidebar == 'user') && ($views_page == 'index')):?>
+    // DataTable
+    // id, sellers.name, buyers.name, net_term, currency, status, created_at
+    new DataTable('#user-lists', {
+        ajax: '<?php echo base_url('/user/lists');?>',
+        layout: {
+            topStart: {
+                buttons: ['copy', 'excel', 'print']
+            }
+        },
+        columns: [
+            { data: 'id' },
+            { data: 'first_name' },
+            { data: 'last_name' },
+            { data: 'seller_name' },
+            { data: 'buyer_name' },
+            { data: 'email' },
+        ],
+        // add href in column 0
+        "columnDefs": [
+          { 
+            // targets column is 0
+             targets: 0,
+             render : function(data, type, row, meta){
+                if(type === 'display'){
+                   return $('<a>')
+                      .attr('href', '/user/edit/' + row.id)
                       .text(data)
                       .wrap('<div></div>')
                       .parent()
