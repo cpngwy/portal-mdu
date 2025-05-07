@@ -1,4 +1,4 @@
-<?php if($view_page == 'new'):?>
+<?php if($views_page == 'new'):?>
 <!-- Form Group (email address)-->
 <div class="col-md-10">
     <label class="small mb-1" for="email">Email</label>
