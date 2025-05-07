@@ -28,13 +28,13 @@
 <div class="sidebar-heading">
     Interface
 </div>
-<li class="nav-item <?php echo ($active_sidebar == 'users') ? 'active' : '';?>">
+<li class="nav-item <?php echo ($active_sidebar == 'user') ? 'active' : '';?>">
     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseOne"
         aria-expanded="true" aria-controls="collapseOne">
         <i class="fas fa-fw fa-user-circle"></i>
         <span>Users</span>
     </a>
-    <div id="collapseOne" class="collapse <?php echo ($active_sidebar == 'users') ? 'show' : '';?>" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+    <div id="collapseOne" class="collapse <?php echo ($active_sidebar == 'user') ? 'show' : '';?>" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
         <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Users Management:</h6>
             <a class="collapse-item" href="<?php echo site_url('user/new');?>">New User</a>
