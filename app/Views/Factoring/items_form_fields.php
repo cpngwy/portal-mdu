@@ -35,7 +35,7 @@
     <label class="small mb-1" data-toggle="tooltip" data-placement="right" aria-hidden="true" title="Number of items.">
         <i class="fas fa-info-circle"></i>&nbsp;Quantity
     </label>
-    <input type="number" name="quantity" id="quantity" onkeyup="compute_items()" class="form-control" value="1" required>
+    <input type="number" name="quantity" id="quantity" onkeyup="compute_items()" onchange="compute_items()" class="form-control" value="1" required>
 </div>
 <div class="col-md-3">
     <label class="small mb-1" data-toggle="tooltip" data-placement="right" aria-hidden="true" title="The net price of line item without taxes, shipping cost or discounts.">

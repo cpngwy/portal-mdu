@@ -49,4 +49,27 @@ class Factoring extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
+
+    public function get_gross_amount_monthly($seller_id)
+    {
+        $start_date = "DATE_FORMAT(NOW() ,'%Y-%m-01')";
+        $end_date = "NOW()";
+        $get_gross = $this->select('SUM(gross_amount_cents) as gross_amount_cents')
+            ->where('seller_id', $seller_id)
+            ->where('created_at >', $start_date)
+            ->where('created_at >', $end_date)
+            ->groupBy('seller_id')
+            ->first();
+        return number_format($get_gross['gross_amount_cents'], 2);
+    }
+
+    public function get_percentage($seller_id, $type, $total_records)
+    {
+        $get_percentage = $this->select("(COUNT(status) / $total_records) * 100 AS percentage")
+            ->where('seller_id', $seller_id)
+            ->where('status', $type)
+            ->groupBy('seller_id')
+            ->first();
+        return $get_percentage;
+    }
 }

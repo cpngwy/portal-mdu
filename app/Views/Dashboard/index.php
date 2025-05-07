@@ -22,7 +22,7 @@
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
                                 Factoring (Monthly)</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">$40,000</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">&euro;<?php echo $get_gross_amount_monthly ?? '0.00';?></div>
                         </div>
                         <div class="col-auto">
                             <i class="fas fa-calendar fa-2x text-gray-300"></i>
@@ -43,12 +43,12 @@
                             </div>
                             <div class="row no-gutters align-items-center">
                                 <div class="col-auto">
-                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">50%</div>
+                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800"><?php echo $approved_percent ?? '0';?>%</div>
                                 </div>
                                 <div class="col">
                                     <div class="progress progress-sm mr-2">
                                         <div class="progress-bar bg-success" role="progressbar"
-                                            style="width: 50%" aria-valuenow="50" aria-valuemin="0"
+                                            style="width: <?php echo $approved_percent ?? '0';?>%" aria-valuenow="<?php echo $approved_percent ?? '0';?>" aria-valuemin="0"
                                             aria-valuemax="100"></div>
                                     </div>
                                 </div>
@@ -72,12 +72,12 @@
                             </div>
                             <div class="row no-gutters align-items-center">
                                 <div class="col-auto">
-                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">5%</div>
+                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800"><?php echo $declined_percent ?? '0';?>%</div>
                                 </div>
                                 <div class="col">
                                     <div class="progress progress-sm mr-2">
                                         <div class="progress-bar bg-danger" role="progressbar"
-                                            style="width: 5%" aria-valuenow="5" aria-valuemin="0"
+                                            style="width: <?php echo $declined_percent ?? '0';?>%" aria-valuenow="<?php echo $declined_percent ?? '0';?>" aria-valuemin="0"
                                             aria-valuemax="100"></div>
                                     </div>
                                 </div>
@@ -99,10 +99,21 @@
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-secondary text-uppercase mb-1">
                                 Pending Requests</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
+                            <div class="row no-gutters align-items-center">
+                                <div class="col-auto">
+                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800"><?php echo $pending_percent ?? '0';?>%</div>
+                                </div>
+                                <div class="col">
+                                    <div class="progress progress-sm mr-2">
+                                        <div class="progress-bar bg-secondary" role="progressbar"
+                                            style="width: <?php echo $pending_percent ?? '0';?>%" aria-valuenow="<?php echo $pending_percent ?? '0';?>" aria-valuemin="0"
+                                            aria-valuemax="100"></div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="col-auto">
-                            <i class="fas fa-comments fa-2x text-gray-300"></i>
+                            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
                         </div>
                     </div>
                 </div>

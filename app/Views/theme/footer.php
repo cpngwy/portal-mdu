@@ -157,6 +157,11 @@
         // end Tom-Select2
     });
 
+    $('.td-href').click(function(){
+        alert('test');
+        $(".se-pre-con").fadeIn(100);
+    });
+
     $('.collapse-item').click(function(){
         $(".se-pre-con").fadeIn(100);
     });
@@ -208,7 +213,7 @@
              targets: 0,
              render : function(data, type, row, meta){
                 if(type === 'display'){
-                   return $('<a>')
+                   return $('<a class="td-href">')
                       .attr('href', '/factoring/edit/' + row.id)
                       .text(data)
                       .wrap('<div></div>')
@@ -248,7 +253,7 @@
              targets: 0,
              render : function(data, type, row, meta){
                 if(type === 'display'){
-                   return $('<a>')
+                   return $('<a class="td-href">')
                       .attr('href', '/user/edit/' + row.id)
                       .text(data)
                       .wrap('<div></div>')

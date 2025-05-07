@@ -19,7 +19,7 @@
                     <div class="card-body">
                         <form action="<?= base_url('users/register') ?>" method="post" class="row g-3">
                         <?= csrf_field() ?>
-                        <?php include('form_fields.php');?>
+                        <?php echo view('Users/form_fields.php', ['views_page' => $views_page]);?>
                         <!-- Save changes button-->
                         <div class="col-md-12 text-right"><button type="submit" class="btn btn-primary mt-2">Register</button></div
                         </form>
