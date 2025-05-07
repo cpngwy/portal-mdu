@@ -154,6 +154,10 @@ class Factoring extends BaseController
         $buyer_representative_model = new BuyerRepresentativeModel();
         $data = $this->request->getPost();
         $data['owner_is_authorized'] = $this->request->getPost('owner_is_authorized') === 'on' ? 1 : 0;
+        $data['gross_amount_cents'] = $this->request->getPost('gross_amount_cents');
+        $data['total_discount_cents'] = $this->request->getPost('total_discount_cents');
+        $data['net_term'] = $this->request->getPost('net_term');
+        $data['invoice_url'] = $this->request->getPost('invoice_url');
         $data['updated_by'] = $this->session->user['id'];
         $model->update($id, $data);
         $factoring = $model->find($id);
