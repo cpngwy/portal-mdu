@@ -23,16 +23,32 @@ class Dashboard extends BaseController
         $data['declined_percent'] = $this->get_percentage('declined');
         $data['pending_percent'] = $this->get_percentage('pending');
         $data['processing_percent'] = $this->get_percentage('processing');
-        $this->session->set('approved_percent', $data['approved_percent']);
-        $this->session->set('declined_percent', $data['declined_percent']);
-        $this->session->set('pending_percent', $data['pending_percent']);
-        $this->session->set('processing_percent', $data['processing_percent']);
+
         $data['views_page'] = 'index';
         return  view('theme/head')
                 .view('theme/sidebar', $data)
                 .view('theme/header')
                 .view('Dashboard/index', $data)
                 .view('theme/footer');
+    }
+
+    public function gross_amount_monthly()
+    {
+        for($x=1; $x<=12; $x++)
+        {
+            $y = $x-1;
+            $amount[$y] = $this->sum_transaction($this->session->user['seller_id'], date('Y').'-0'.$x.'-01', date('Y').'-0'.$x.'-31 23:59:59', 'factoring', 'approved');
+        }
+        return json_encode($amount);
+    }
+
+    public function status_percentage()
+    {
+        $percentage[0] = $this->get_percentage('pending');
+        $percentage[1] = $this->get_percentage('processing');
+        $percentage[2] = $this->get_percentage('approved');
+        $percentage[3] = $this->get_percentage('declined');
+        return json_encode($percentage);
     }
 
     private function get_gross_amount_monthly()
@@ -46,6 +62,28 @@ class Dashboard extends BaseController
         $factoring = new Factoring();
         $total_records = $factoring->select('COUNT(status) as total')->where('seller_id', $this->session->user['seller_id'])->groupBy('seller_id')->first();
         $percentage = $factoring->get_percentage($this->session->user['seller_id'], $type, $total_records['total']);
-        return (isset($percentage['percentage'])) ? number_format($percentage['percentage'], 2) : 0.00;
-    }   
+        return number_format($percentage['percentage'], 3) ??  0.00;
+    }
+
+    private function sum_transaction($seller_id, $start, $end, $type, $status)
+    {
+        $factoring = new Factoring();
+        
+        if(empty($status)):
+        
+            $query = $factoring->select('SUM(gross_amount_cents) as gross_amount_cents')
+            ->where(plural($type).'.seller_id', $seller_id)
+            ->where(plural($type).'.created_at >=', $start)
+            ->where(plural($type).'.created_at <=', $end)->first();
+            return $query['gross_amount_cents'] ?? 0.00;
+
+        endif;
+
+        $query = $factoring->select('SUM(gross_amount_cents) as gross_amount_cents')
+        ->where(plural($type).'.seller_id', $seller_id)
+        ->where(plural($type).'.status', $status)
+        ->where(plural($type).'.created_at >=', $start)
+        ->where(plural($type).'.created_at <=', $end)->first();
+        return $query['gross_amount_cents'] ?? 0.00;
+    }
 }
