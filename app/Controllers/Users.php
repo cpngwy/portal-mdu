@@ -10,6 +10,7 @@ use CodeIgniter\Shield\Exceptions\ValidationException;
 use CodeIgniter\Shield\Validation\ValidationRules;
 use CodeIgniter\Shield\Entities\User;
 use CodeIgniter\Shield\Models\UserModel;
+use CodeIgniter\Shield\Authentication\Passwords;
 
 class Users extends BaseController
 {
@@ -106,6 +107,60 @@ class Users extends BaseController
         ]);
         $users->save($user);
         return redirect()->to('/user/edit/'.$id)->withInput()->with('message', 'User updated successfully!');
+    }
+
+    public function profile()
+    {
+        $user = new UserModel();
+        $data['user_full_name'] = $this->session->user_full_name;
+        $data['active_sidebar'] = $this->session->active_sidebar;
+        $data['views_page'] = 'profile';
+        $data['user'] = auth()->user();
+        $data['error'] = $this->session->error ?? '';
+        $data['message'] = $this->session->message;
+        $data['errors'] = $this->session->errors;
+        return  view('theme/head')
+                .view('theme/sidebar', $data)
+                .view('theme/header')
+                .view('Users/profile', $data)
+                .view('theme/footer');
+    }
+
+    public function edit_profile_password()
+    {
+        if ($this->request->getMethod() === 'post' || $this->request->getMethod() === 'POST') {
+            // Verify current password
+            $rules = [
+                'current_password' => 'required',
+                'new_password'     => 'required|min_length[8]',
+                'confirm_password' => 'required|matches[new_password]',
+            ];
+
+            if (! $this->validate($rules)) {
+                return redirect()->to('/user/profile')->withInput()->with('errors', $this->validator->getErrors());
+            }
+            
+            $currentPassword = $this->request->getPost('current_password');
+            $newPassword     = $this->request->getPost('new_password');
+
+            /** @var \CodeIgniter\Shield\Entities\User $user */
+            $user = auth()->user();
+            $get_user = new User();
+            // Verify current password
+            $passwordService = service('passwords');
+            if (! $passwordService->verify($user->password_hash, $currentPassword)) {
+                return redirect()->to('/user/profile')
+                ->with('password', $get_user->getPassword())
+                ->with('error', 'Current password is incorrect.');
+            }
+            // Update password
+            $user->fill([
+                'password' => $newPassword,
+            ]);
+            model(UserModel::class)->save($user);
+
+            return redirect()->to('/user/profile')->with('message', 'Password updated successfully.');
+        }
     }
 
     public function update_seller_buyer($id)
