@@ -60,8 +60,9 @@
     <script src="/themes/sb-admin-2-gh-pages/vendor/chart.js/Chart.min.js"></script>
 
     <!-- Page level custom scripts -->
-    <script src="/themes/sb-admin-2-gh-pages/js/demo/chart-area-demo.js"></script>
-    <script src="/themes/sb-admin-2-gh-pages/js/demo/chart-pie-demo.js"></script>
+    <?php if($active_sidebar == 'dashboard'):?>
+    <script src="/themes/sb-admin-2-gh-pages/js/portal-mdu-charts/dashboard-charts.js"></script>
+    <?php endif;?>
     <?php if(($active_sidebar == 'factoring' || $active_sidebar == 'dashboard' || $active_sidebar == 'user') && ($views_page == 'index')):?>
     <!-- Page level plugins -->
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
@@ -157,8 +158,11 @@
         // end Tom-Select2
     });
 
-    $('.td-href').click(function(){
-        alert('test');
+    $('.dropdown-item').click(function(){
+        $(".se-pre-con").fadeIn(100);
+    });
+
+    $('#dashboard-nav-link').click(function(){
         $(".se-pre-con").fadeIn(100);
     });
 

@@ -9,6 +9,10 @@ use CodeIgniter\Router\RouteCollection;
 
 
 $routes->get('/', 'Dashboard::index', ['filter'=>'auth']);
+$routes->get('/dashboard/gross_amount_monthly', 'Dashboard::gross_amount_monthly', ['filter'=>'auth']);
+$routes->post('/dashboard/gross_amount_monthly', 'Dashboard::gross_amount_monthly', ['filter'=>'auth']);
+$routes->get('/dashboard/status_percentage', 'Dashboard::status_percentage', ['filter'=>'auth']);
+$routes->post('/dashboard/status_percentage', 'Dashboard::status_percentage', ['filter'=>'auth']);
 $routes->get('no-access', 'AuthController::noAccess');
 $routes->get('user', 'Users::index', ['filter' => 'auth']);
 $routes->get('user/edit/(:num)', 'Users::edit/$1', ['filter' => 'auth']);
@@ -19,6 +23,8 @@ $routes->get('user/assign/(:num)/(:alpha)', 'Users::assignRole/$1/$2', ['filter'
 $routes->post('user/update_seller_buyer/(:num)', 'Users::update_seller_buyer/$1', ['filter' => 'auth']);
 $routes->get('user/lists', 'Users::lists', ['filter' => 'auth']);
 $routes->post('user/lists', 'Users::lists', ['filter' => 'auth']);
+$routes->get('user/profile', 'Users::profile', ['filter' => 'auth']);
+$routes->post('user/updateprofilepassword', 'Users::edit_profile_password', ['filter' => 'auth']);
 $routes->get('seller', 'Seller::index', ['filter' => 'auth']);
 $routes->get('seller/add', 'Seller::add', ['filter' => 'auth']);
 $routes->post('seller/store', 'Seller::store', ['filter' => 'auth']);

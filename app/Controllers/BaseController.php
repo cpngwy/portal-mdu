@@ -71,6 +71,7 @@ abstract class BaseController extends Controller
         helper('text');
         helper('date');
         helper('filesystem');
+        helper('inflector');
 
         // load services
         $this->request = \Config\Services::request();
