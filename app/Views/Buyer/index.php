@@ -5,32 +5,31 @@
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered">
+                <table id="buyer-lists" class="display">
                     <thead>
                         <tr>
-                            <th>Buyer Code</th>
-                            <th>Name</th>
-                            <th>P.IVA</th>
-                            <th>Registration ID</th>
+                            <th>Id</th>
+                            <th>Supplier Code</th>
+                            <th>Seller Name</th>
+                            <th>P.Iva</th>
+                            <th>Registration Id</th>
+                            <th>Address</th>
                             <th>Status</th>
-                            <th>Actions</th>
+                            <th>Created At</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <?php foreach($buyers as $buyer): ?>
-                            <tr>
-                                <td><?= $buyer['buyer_code'] ?></td>
-                                <td><?= $buyer['name'] ?></td>
-                                <td><?= $buyer['piva'] ?></td>
-                                <td><?= $buyer['registration_id'] ?></td>
-                                <td><?= $buyer['status'] ?></td>
-                                <td>
-                                    <a href="/buyer/edit/<?= $buyer['id'] ?>" class="btn btn-sm btn-info">Edit</a>
-                                    <!-- <a href="/buyer/delete/<?= $buyer['id'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Delete?')">Delete</a> -->
-                                </td>
-                            </tr>
-                        <?php endforeach ?>
-                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>Id</th>
+                            <th>Supplier Code</th>
+                            <th>Seller Name</th>
+                            <th>P.Iva</th>
+                            <th>Registration Id</th>
+                            <th>Address</th>
+                            <th>Status</th>
+                            <th>Created At</th>
+                        </tr>
+                    </tfoot>
                 </table>
             </div>
         </div>

@@ -17,6 +17,14 @@ use CodeIgniter\I18n\Time;
 
 class Factoring extends BaseController
 {
+    /**
+     * The index method is responsible for rendering the index view, which displays the list of
+     * all factorings. It first checks if the user is logged in, if not it redirects to the login page.
+     * Then it sets up the data to be passed to the view, including the user's full name,
+     * the active sidebar item, the page being viewed, and the message to be displayed.
+     * Finally, it renders the view.
+     * @return ResponseInterface the rendered view
+     */
     public function index()
     {
         if (!auth()->loggedIn()) {
@@ -36,6 +44,15 @@ class Factoring extends BaseController
         .view('theme/footer');
     }
 
+    /**
+     * The create method is responsible for rendering the create view, which displays the form to add a new factoring.
+     * It first checks if the user is logged in, if not it redirects to the login page.
+     * Then it sets up the data to be passed to the view, including the user's full name,
+     * the active sidebar item, the page being viewed, the message to be displayed, and the errors to be displayed.
+     * It also sets up the sellers and buyers to be displayed in the form.
+     * Finally, it renders the view.
+     * @return ResponseInterface the rendered view
+     */
     public function create()
     {
         if (!auth()->loggedIn()) {
@@ -63,6 +80,14 @@ class Factoring extends BaseController
         .view('theme/footer');
     }
 
+    /**
+     * The store method is responsible for storing a new factoring in the database.
+     * It first validates the input against a set of rules, if any of the validations fail,
+     * it redirects back to the create view with the input and errors.
+     * If the validation succeeds, it saves the factoring to the database, and redirects
+     * to the edit view with a message of success.
+     * @return ResponseInterface the rendered view
+     */
     public function store()
     {   
 
@@ -103,6 +128,16 @@ class Factoring extends BaseController
         return redirect()->to('/factoring/edit/'.$model->getInsertID())->with('message', 'Factoring has been created, add items and continue.');
     }
 
+    /**
+     * The edit method is responsible for rendering the edit view, which displays the form to update a factoring.
+     * It first checks if the user is logged in, if not it redirects to the login page.
+     * Then it sets up the data to be passed to the view, including the user's full name,
+     * the active sidebar item, the page being viewed, the message to be displayed, and the errors to be displayed.
+     * It also sets up the factoring, sellers, buyers, factoring items, buyer addresses, and buyer representatives to be displayed in the form.
+     * Finally, it renders the view.
+     * @param int $id the ID of the factoring to be edited
+     * @return ResponseInterface the rendered view
+     */
     public function edit($id)
     {
         if (!auth()->loggedIn()) {
@@ -136,6 +171,17 @@ class Factoring extends BaseController
         .view('theme/footer');
     }
 
+    /**
+     * Update a factoring invoice.
+     * 
+     * This function validates the request input against the rules defined in $rules.
+     * If the validation fails, it redirects the user to the edit view with the errors.
+     * If the validation passes, it updates the factoring invoice and redirects the user
+     * to the same view with a success message. If the API call fails, it redirects the
+     * user to the same view with the errors.
+     * @param int $id the ID of the factoring to be updated
+     * @return ResponseInterface the rendered view
+     */
     public function update($id)
     {
         $validation = service('validation');
@@ -264,11 +310,11 @@ class Factoring extends BaseController
     }
 
     /**
-     * Return a list of buyers in json format, for datatables.
-     * 
-     * @return string
+     * Get the list of all factorings in JSON format
+     *
+     * @return JSON
      */
-    public function lists()
+        public function lists()
     {
         $model = new FactoringModel();
         $factorings = $model->select('factorings.id, invoice_external_reference_id as external_reference_id, sellers.name seller_name, buyers.name buyer_name, gross_amount_cents gross_amount, currency, net_term, factorings.status, factorings.created_at')
@@ -287,6 +333,11 @@ class Factoring extends BaseController
         echo json_encode($data);
     }
 
+    /**
+     * Get the upload form for a factoring invoice
+     * @param int $id the ID of the factoring invoice
+     * @return view the upload form view
+     */
     public function upload($id)
     {
         if (!auth()->loggedIn()) {
@@ -306,12 +357,28 @@ class Factoring extends BaseController
         .view('theme/footer');
     }
 
+    /**
+     * Convert a given date time string to a Carbon DateTime string
+     *
+     * @param string $from_data the date time string to convert
+     * @return string the converted date time string
+     */
     private function toDateTimeString($from_data)
     {
         $time = Time::parse($from_data);
         return $time->toDateTimeString();
     }
 
+    /**
+     * Sends a POST request to the Mondu API with the given API key and request body.
+     *
+     * @param string $api_key the API key to use for the request
+     * @param string $body the request body to send
+     *
+     * @return array an array containing the status code and response body
+     *
+     * @throws \GuzzleHttp\Exception\RequestException if the request fails
+     */
     private function sendPost($api_key, $body)
     {
         $client = new Client();
