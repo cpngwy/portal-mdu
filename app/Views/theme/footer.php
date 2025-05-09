@@ -63,7 +63,7 @@
     <?php if($active_sidebar == 'dashboard'):?>
     <script src="/themes/sb-admin-2-gh-pages/js/portal-mdu-charts/dashboard-charts.js"></script>
     <?php endif;?>
-    <?php if(($active_sidebar == 'factoring' || $active_sidebar == 'dashboard' || $active_sidebar == 'user') && ($views_page == 'index')):?>
+    <?php if(($active_sidebar == 'factoring' || $active_sidebar == 'dashboard' || $active_sidebar == 'user' || $active_sidebar == 'seller' || $active_sidebar == 'buyer') && ($views_page == 'index')):?>
     <!-- Page level plugins -->
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script src="https://cdn.datatables.net/2.3.0/js/dataTables.js"></script>
@@ -259,6 +259,48 @@
                 if(type === 'display'){
                    return $('<a class="td-href">')
                       .attr('href', '/user/edit/' + row.id)
+                      .text(data)
+                      .wrap('<div></div>')
+                      .parent()
+                      .html();
+
+                } else {
+                   return data;
+                }
+             }
+          } 
+       ]
+    });
+    <?php endif;?>
+    <?php if(($active_sidebar == 'seller' || ($active_sidebar == 'buyer')) && ($views_page == 'index')):?>
+    // DataTable
+    // id, sellers.name, buyers.name, net_term, currency, status, created_at
+    new DataTable('#<?php echo $active_sidebar?>-lists', {
+        ajax: '<?php echo base_url('/'.$active_sidebar.'/lists');?>',
+        layout: {
+            topStart: {
+                buttons: ['copy', 'excel', 'pdf', 'print']
+            }
+        },
+        columns: [
+            { data: 'id' },
+            { data: '<?php echo $active_sidebar?>_code' },
+            { data: 'name' },
+            { data: 'piva' },
+            { data: 'registration_id' },
+            { data: 'address' },
+            { data: 'status' },
+            { data: 'created_at' },
+        ],
+        // add href in column 0
+        "columnDefs": [
+          { 
+            // targets column is 0
+             targets: 0,
+             render : function(data, type, row, meta){
+                if(type === 'display'){
+                   return $('<a class="td-href">')
+                      .attr('href', '/<?php echo $active_sidebar?>/edit/' + row.id)
                       .text(data)
                       .wrap('<div></div>')
                       .parent()
