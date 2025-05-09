@@ -9,11 +9,18 @@ use CodeIgniter\HTTP\ResponseInterface;
 
 class SellerBuyer extends BaseController
 {
-    public function index()
-    {
-        //
-    }
 
+    /**
+     * Shows the form to add a buyer to a seller.
+     *
+     * The function receives a seller ID and shows the corresponding form.
+     * The form is populated with the buyer's data from the database.
+     * The function also makes a list of all buyers available for the seller-buyer
+     * relationship.
+     * The function returns a view with the form and the list of buyers.
+     *
+     * @param int $seller_id The ID of the seller to be edited.
+     */
     public function store($seller_id)
     {
         $validation = service('validation');
