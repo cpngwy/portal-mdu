@@ -158,7 +158,7 @@
         // end Tom-Select2
     });
 
-    $('.dropdown-item').click(function(){
+    $('#user-profile').click(function(){
         $(".se-pre-con").fadeIn(100);
     });
 

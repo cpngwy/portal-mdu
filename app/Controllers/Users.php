@@ -11,9 +11,16 @@ use CodeIgniter\Shield\Validation\ValidationRules;
 use CodeIgniter\Shield\Entities\User;
 use CodeIgniter\Shield\Models\UserModel;
 use CodeIgniter\Shield\Authentication\Passwords;
+use CodeIgniter\Shield\Authentication\Authentication;
+
 
 class Users extends BaseController
 {
+    /**
+     * The index method lists all users in the application.
+     *
+     * @return string
+     */
     public function index()
     {
         if (!auth()->user()->inGroup('admin')) {
@@ -35,6 +42,14 @@ class Users extends BaseController
                 .view('theme/footer');
     }
 
+    /**
+     * Assigns a role to a specified user.
+     *
+     * @param int $userId The ID of the user to whom the role will be assigned.
+     * @param string $role The role to be assigned to the user.
+     * @return \CodeIgniter\HTTP\RedirectResponse Redirects to the user edit page with a success message if the role is assigned, otherwise redirects to the no-access page.
+     */
+
     public function assignRole($userId, $role)
     {
         if (!auth()->user()->inGroup('admin')) {
@@ -47,6 +62,17 @@ class Users extends BaseController
         }
         return redirect()->to('user/edit/'.$userId)->with('message','Role assigned successfully');
     }
+
+    /**
+     * Displays the User Registration page.
+     *
+     * This function retrieves all sellers and buyers from the database
+     * and prepares the data for rendering the user registration view.
+     * It sets up necessary session data for the views, such as the user's
+     * full name, active sidebar, and any session messages or errors.
+     *
+     * @return string The rendered view of the user registration page.
+     */
 
     public function new()
     {
@@ -68,6 +94,18 @@ class Users extends BaseController
         .view('theme/footer'); 
     }
 
+    /**
+     * Displays the User Edit page.
+     *
+     * This function retrieves the user with the given id from the database
+     * and prepares the data for rendering the user edit view.
+     * It sets up necessary session data for the views, such as the user's
+     * full name, active sidebar, and any session messages or errors.
+     *
+     * @param int $id the id of the user to be edited
+     *
+     * @return string The rendered view of the user edit page.
+     */
     public function edit($id)
     {
         $user = new UserModel();
@@ -89,6 +127,20 @@ class Users extends BaseController
                 .view('theme/footer');
     }
 
+    /**
+     * Updates the user with the given id.
+     *
+     * This function validates the given request data against the given rules.
+     * If the validation fails, it redirects the user back to the edit user page
+     * with the input data and the errors encountered during the validation.
+     *
+     * If the validation succeeds, it updates the user with the given data and
+     * saves the user to the database.
+     *
+     * @param int $id the id of the user to be updated
+     *
+     * @return string The rendered view of the user edit page with a success message.
+     */
     public function update($id)
     {
         $validation = service('validation');
@@ -109,6 +161,16 @@ class Users extends BaseController
         return redirect()->to('/user/edit/'.$id)->withInput()->with('message', 'User updated successfully!');
     }
 
+    /**
+     * The profile method displays the user profile page.
+     *
+     * This method populates the necessary session data for the view,
+     * such as the user's full name, active sidebar, and any session
+     * messages or errors. It sets up the user data and renders the
+     * user profile view.
+     *
+     * @return string The rendered view of the user profile page.
+     */
     public function profile()
     {
         $user = new UserModel();
@@ -126,10 +188,21 @@ class Users extends BaseController
                 .view('theme/footer');
     }
 
+    /**
+     * Updates the current user's password.
+     *
+     * This method handles the password change request for the user profile.
+     * It validates the input request to ensure that the current password,
+     * new password, and confirm password are provided and meet the specified
+     * rules. If validation fails, it redirects back to the profile page with
+     * errors. If the current password is incorrect, it redirects with an error
+     * message. If successful, it updates the user's password and redirects with
+     * a success message.
+     */
+
     public function edit_profile_password()
     {
         if ($this->request->getMethod() === 'post' || $this->request->getMethod() === 'POST') {
-            // Verify current password
             $rules = [
                 'current_password' => 'required',
                 'new_password'     => 'required|min_length[8]',
@@ -139,30 +212,42 @@ class Users extends BaseController
             if (! $this->validate($rules)) {
                 return redirect()->to('/user/profile')->withInput()->with('errors', $this->validator->getErrors());
             }
-            
+
             $currentPassword = $this->request->getPost('current_password');
             $newPassword     = $this->request->getPost('new_password');
 
-            /** @var \CodeIgniter\Shield\Entities\User $user */
-            $user = auth()->user();
-            $get_user = new User();
-            // Verify current password
             $passwordService = service('passwords');
-            if (! $passwordService->verify($user->password_hash, $currentPassword)) {
+            if (! $passwordService->verify($currentPassword, auth()->user()->password_hash)) {
                 return redirect()->to('/user/profile')
-                ->with('password', $get_user->getPassword())
                 ->with('error', 'Current password is incorrect.');
             }
-            // Update password
-            $user->fill([
+
+            auth()->user()->fill([
                 'password' => $newPassword,
             ]);
-            model(UserModel::class)->save($user);
+
+            model(UserModel::class)->save(auth()->user());
 
             return redirect()->to('/user/profile')->with('message', 'Password updated successfully.');
         }
+
+        
     }
 
+    /**
+     * Updates the seller and buyer of the user with the given id.
+     *
+     * This function validates the given request data against the given rules.
+     * If the validation fails, it redirects the user back to the edit user page
+     * with the input data and the errors encountered during the validation.
+     *
+     * If the validation succeeds, it updates the user with the given data and
+     * saves the user to the database.
+     *
+     * @param int $id the id of the user to be updated
+     *
+     * @return string The rendered view of the user edit page with a success message.
+     */
     public function update_seller_buyer($id)
     {
         $validation = service('validation');
@@ -180,6 +265,18 @@ class Users extends BaseController
         return redirect()->to('/user/edit/'.$id)->with('message', 'User updated successfully!');
     }
 
+    /**
+     * Handles the creation of a new user.
+     *
+     * This function validates the given request data against the given rules.
+     * If the validation fails, it redirects the user back to the register page
+     * with the input data and the errors encountered during the validation.
+     *
+     * If the validation succeeds, it creates a new user and saves the user to
+     * the database.
+     *
+     * @return string The rendered view of the user edit page with a success message.
+     */
     public function register_user()
     {
         $users = $this->getUserProvider();
@@ -209,6 +306,16 @@ class Users extends BaseController
         return redirect()->to('users/new')->with('message','User has been created.');
 
     }
+
+    /**
+     * Retrieves a list of users with their associated seller and buyer names, and email.
+     *
+     * This method queries the database to fetch user information along with related
+     * seller and buyer names, and user email. It joins the users table with the sellers,
+     * buyers, and auth_identities tables to gather the relevant information. The results
+     * are grouped by user ID and returned as a JSON-encoded array, which includes the
+     * total number of records filtered.
+     */
 
     public function lists()
     {
