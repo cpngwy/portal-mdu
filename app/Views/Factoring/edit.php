@@ -1,17 +1,26 @@
 <div class="content">
     <div class="container-fluid">
-        <div class="row mt-4">
-            <div class="col-xl-2">
+        <div class="row mt-2">
+            <div class="col-xl-4">
                 <h4 class="page-header-title">
-                    <div class="page-header-icon">
-                            Create <?= ucfirst($active_sidebar)?>
+                    <div class="page-header-icon text-left">
+                        <img class="img-fluid" src="/themes/sb-admin-2-gh-pages/img/custom-svg/undraw_receipt_tzi0.svg" width="82">
                     </div>  
                 </h4>
             </div>
-            <div class="col-xl-10 page-header-title">
-                <div class="page-header-icon text-right">
-                    <img class="img-fluid" src="/themes/sb-admin-2-gh-pages/img/custom-svg/undraw_printing-invoices_osgs.svg" height="120" width="90" alt="">
-                </div>
+            <div class="col-xl-4">
+                <h4 class="page-header-title">
+                    <div class="page-header-icon text-center">
+                        <?= ucfirst($active_sidebar)?>
+                    </div>
+                </h4>
+            </div>
+            <div class="col-xl-4">
+                <h4 class="page-header-title">
+                    <div class="page-header-icon text-right">
+                        <img class="img-fluid" src="/themes/sb-admin-2-gh-pages/img/custom-svg/undraw_printing-invoices_osgs.svg" width="120">
+                    </div>
+                </h4>
             </div>
         </div>
         <div class="row mt-4">
@@ -21,12 +30,19 @@
             <div class="col-xl-7">
                 <div class="card mb-4">
                     <div class="card-header">
-                        <h6 class="m-0 font-weight-bold text-primary"><?= ucfirst($active_sidebar)?> Details</h6>
+                        <h6 class="m-0 font-weight-bold text-primary border">
+                            <div class="col-12">
+                                <?php $text_color = ['pending' => 'text-secondary', 'processing' => 'text-primary', 'confirmed' => 'text-info', 'approved' => 'text-success', 'declined' => 'text-danger'];?>
+                                <?= ucfirst($active_sidebar)?> Details 
+                                    (<span class="<?= $text_color[$factoring['status']];?> text-right">Uuid: <?php echo ucfirst($factoring['factoring_uuid']) ?? 'No Uuid yet';?> - </span>
+                                    <span class="<?= $text_color[$factoring['status']];?>"><?php echo ucfirst($factoring['status']);?></span>)
+                            </div>
+                        </h6>
                     </div>
                     <div class="card-body">
-                        <form action="<?= base_url('factoring/update/' . $factoring['id']) ?>" method="post" class="row g-3">
+                        <form action="<?= base_url('factoring/update/' . $factoring['id']) ?>" method="post" enctype="multipart/form-data" class="row g-3">
                             <?= view('Factoring/form_fields', ['factoring' => $factoring, 'factoring_items_count' => $factoring_items_count]) ?>
-                            <?php if($factoring_items_count > 0):?>
+                            <?php if($factoring_items_count > 0 && $factoring['status'] == 'pending' && !empty($factoring['file']) || $factoring['status'] == ''):?>
                             <div class="col-12 text-right mt-2">
                                 <button type="submit" id="submit-btn" class="btn btn-primary">Submit Factoring</button>
                             </div>
@@ -40,14 +56,19 @@
                     <div class="card-header">
                         <h6 class="m-0 font-weight-bold text-primary">Factoring Item/s</h6>
                     </div>
+                    <?php if($factoring['status'] == 'pending'):?> 
                     <div class="card-body">
+                        
                         <form action="<?= base_url('factoringitem/store/' . $factoring['id']) ?>" method="post" class="row g-3">
                             <?= view('Factoring/items_form_fields', ['factoring' => $factoring]) ?>
+                            
                             <div class="col-12 text-right mt-2">
                                 <button type="submit" class="btn btn-danger">Add Item/s</button>
                             </div>
                         </form>
+                        
                     </div>
+                    <?php endif;?>
                     <div class="card-footer">
                         <div class="form-group">
                             <table class="table" id="factoring_items">
@@ -73,7 +94,24 @@
                         </div>
                     </div>
                 </div>
+            </div>  
+            <?php if(empty($factoring['file']) && $factoring_items_count > 0):?>
+            <div class="col-xl-7">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h6 class="m-0 font-weight-bold text-primary"><?= ucfirst($active_sidebar)?> Invoice Upload</h6>
+                    </div>
+                    <div class="card-body">
+                        <form action="<?= base_url('file/upload/' . $factoring['id'] .'/'. $factoring['invoice_external_reference_id'] .'/'. 'Mondu_Factoring_Invoices') ?>" method="post" enctype="multipart/form-data" class="row g-3">
+                            <?= view('Factoring/invoice_upload_form', ['factoring' => $factoring]) ?>
+                            <div class="col-12 text-right mt-2">
+                                <button type="submit" id="submit-btn" class="btn btn-primary">Upload</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
+            <?php endif;?>
         </div>
     </div>
 </div>

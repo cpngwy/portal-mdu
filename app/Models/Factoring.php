@@ -16,7 +16,7 @@ class Factoring extends Model
         'seller_id', 'buyer_id', 'invoice_external_reference_id', 'currency',
         'net_term', 'payment_method', 'total_discount_cents', 'invoice_issued_at',
         'gross_amount_cents', 'language', 'invoice_url', 'file',
-        'owner_first_name', 'owner_last_name', 'owner_is_authorized', 'status', 
+        'owner_first_name', 'owner_last_name', 'owner_is_authorized', 'status', 'factoring_uuid',
         'created_at', 'updated_at', 'created_by', 'updated_by'
     ];
 
@@ -70,6 +70,6 @@ class Factoring extends Model
             ->where('status', $type)
             ->groupBy('seller_id')
             ->first();
-        return $get_percentage;
+        return $get_percentage['percentage'] ?? 0;
     }
 }

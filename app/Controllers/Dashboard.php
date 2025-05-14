@@ -31,10 +31,10 @@ class Dashboard extends BaseController
         $data['user_full_name'] = $this->session->user_full_name;
         $data['active_sidebar'] = $this->session->active_sidebar;
         $data['get_gross_amount_monthly'] = $this->get_gross_amount_monthly();
-        $data['approved_percent'] = $this->get_percentage('approved');
-        $data['declined_percent'] = $this->get_percentage('declined');
-        $data['pending_percent'] = $this->get_percentage('pending');
-        $data['processing_percent'] = $this->get_percentage('processing');
+        $data['approved_percent'] = (double)$this->get_percentage('approved');
+        $data['declined_percent'] = (double)$this->get_percentage('declined');
+        $data['pending_percent'] = (double)$this->get_percentage('pending');
+        $data['processing_percent'] = (double)$this->get_percentage('processing');
 
         $data['views_page'] = 'index';
         return  view('theme/head')
@@ -73,8 +73,9 @@ class Dashboard extends BaseController
     {
         $percentage[0] = $this->get_percentage('pending');
         $percentage[1] = $this->get_percentage('processing');
-        $percentage[2] = $this->get_percentage('approved');
-        $percentage[3] = $this->get_percentage('declined');
+        $percentage[2] = $this->get_percentage('confirmed');
+        $percentage[3] = $this->get_percentage('approved');
+        $percentage[4] = $this->get_percentage('declined');
         return json_encode($percentage);
     }
 
@@ -112,7 +113,7 @@ class Dashboard extends BaseController
         $factoring = new Factoring();
         $total_records = $factoring->select('COUNT(status) as total')->where('seller_id', $this->session->user['seller_id'])->groupBy('seller_id')->first();
         $percentage = $factoring->get_percentage($this->session->user['seller_id'], $type, $total_records['total']);
-        return number_format($percentage['percentage'], 3) ??  0.00;
+        return number_format($percentage, 3);
     }
 
     /**

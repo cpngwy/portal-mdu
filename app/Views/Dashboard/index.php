@@ -163,6 +163,9 @@
                             <i class="fas fa-circle text-primary"></i> Processing
                         </span>
                         <span class="mr-2">
+                            <i class="fas fa-circle text-info"></i> Confirmed 
+                        </span>
+                        <span class="mr-2">
                             <i class="fas fa-circle text-success"></i> Approved 
                         </span>
                         <span class="mr-2">
@@ -224,7 +227,7 @@
             <div class="card shadow mb-4">
                 <div class="card-body">
                     <div class="text-center">
-                        <img class="img-fluid mt-3 mb-4" style="width: 25rem;" src="/themes/sb-admin-2-gh-pages/img/custom-svg/undraw_payments_nbqu.svg" alt="...">
+                        <img class="img-fluid mt-3 mb-4" style="width: 25rem;" src="/themes/sb-admin-2-gh-pages/img/custom-svg/undraw_payments_nbqu.svg" width="" alt="...">
                     </div>
                 </div>
             </div>
