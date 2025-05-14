@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
+use App\Models\Factoring as FactoringModel;
 use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\Files\File;
 use CodeIgniter\I18n\Time;
@@ -25,7 +26,7 @@ class FileUpload extends BaseController
 
             if (! $this->validate($validationRule)):
             
-                return redirect()->to('/factoring/upload/'.$id)->with('errors', $this->validator->getErrors());
+                return redirect()->to('/factoring/edit/'.$id)->with('errors', $this->validator->getErrors());
 
             endif;
 
@@ -35,17 +36,24 @@ class FileUpload extends BaseController
                 
                 $time = new Time();
                 $ymd = sprintf('%s%s%s_', $time->getYear(), $time->getMonth(), $time->getDay());
-                $filepath = WRITEPATH . 'uploads/' . $document_file->store($dir.'/', $ymd.$file_name.'.pdf');
+                $filepath = WRITEPATH . 'uploads/' . $document_file->store($dir.'/', $file_name.'.pdf');
+                
+                log_message('info', 'FilePath: '.$filepath);
+                // $data = [
+                //     'filepath' => $filepath,
+                //     'filename' => $document_file->getClientName(),
+                // ];
                 $data = [
-                    'filepath' => $filepath,
-                    'filename' => $document_file->getClientName(),
+                    'file' => $dir.'/'.$file_name.'.pdf', 
+                    'invoice_url' => base_url('/factoring/link/'.$file_name.'.pdf')
                 ];
-
-                return redirect()->to('/factoring/upload/'.$id)->with('message', 'The file has been uploaded.');
+                $model = new FactoringModel();
+                $model->update($id, $data);
+                return redirect()->to('/factoring/edit/'.$id)->with('message', 'The file has been uploaded, please review your "Factoring Details" before you click "Submit Factoring" button!');
 
             endif;
 
-            return redirect()->to('/factoring/upload/'.$id)->with('errors', 'The file has already been moved.');
+            return redirect()->to('/factoring/edit/'.$id)->with('errors', 'The file has already been moved.');
 
         endif;
     }
