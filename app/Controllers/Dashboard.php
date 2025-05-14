@@ -112,7 +112,7 @@ class Dashboard extends BaseController
     {
         $factoring = new Factoring();
         $total_records = $factoring->select('COUNT(status) as total')->where('seller_id', $this->session->user['seller_id'])->groupBy('seller_id')->first();
-        $percentage = $factoring->get_percentage($this->session->user['seller_id'], $type, $total_records['total']);
+        $percentage = $factoring->get_percentage($this->session->user['seller_id'], $type, $total_records['total'] ?? 0);
         return number_format($percentage, 3);
     }
 
