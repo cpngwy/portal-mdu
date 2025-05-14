@@ -50,6 +50,15 @@ class Factoring extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
+    /**
+     * Returns the gross amount in cents for the given seller id, 
+     * for the current month. The returned value is a string 
+     * formatted as a decimal number with two decimal places.
+     * 
+     * @param int $seller_id The id of the seller.
+     * 
+     * @return string The gross amount in cents.
+     */
     public function get_gross_amount_monthly($seller_id)
     {
         $start_date = "DATE_FORMAT(NOW() ,'%Y-%m-01')";
@@ -60,9 +69,18 @@ class Factoring extends Model
             ->where('created_at >', $end_date)
             ->groupBy('seller_id')
             ->first();
-        return number_format($get_gross['gross_amount_cents'], 2);
+        return number_format($get_gross['gross_amount_cents'] ?? 0, 2);
     }
 
+    /**
+     * Returns the percentage of factorings for the given seller id and type.
+     * 
+     * @param int $seller_id The id of the seller.
+     * @param string $type The type of factorings.
+     * @param int $total_records The total number of records.
+     * 
+     * @return float The percentage.
+     */
     public function get_percentage($seller_id, $type, $total_records)
     {
         $get_percentage = $this->select("(COUNT(status) / $total_records) * 100 AS percentage")
