@@ -86,6 +86,13 @@ abstract class BaseController extends Controller
             
             $user_full_name = auth()->user()->first_name . ' ' . auth()->user()->last_name;
             $this->session->set('user_full_name', $user_full_name);
+            $user = auth()->user();
+            if($user->inGroup('admin')):
+                $this->session->set('user_group', 'admin');
+            endif;
+            if($user->inGroup('user')):
+                $this->session->set('user_group', 'user');
+            endif;
         }
         
         // get Segment 2 for sidebar menu

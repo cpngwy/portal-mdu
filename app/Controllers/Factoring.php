@@ -33,6 +33,7 @@ class Factoring extends BaseController
             return redirect()->to('login');
         }
 
+        $data['user_group'] = $this->session->user_group ?? 'user';
         $data['user_full_name'] = $this->session->user_full_name;
         $data['active_sidebar'] = $this->session->active_sidebar;
         $data['views_page'] = 'index';
@@ -67,6 +68,7 @@ class Factoring extends BaseController
         $time = new Time();
         $invoice_external_reference_id = sprintf('%s%s%s_%s%s', $time->getYear(), $time->getMonth(), $time->getDay(), random_string('alnum', 6), $time->getTimestamp());
         $data['views_page'] = $this->session->views_page;
+        $data['user_group'] = $this->session->user_group ?? 'user';
         $data['user_full_name'] = $this->session->user_full_name;
         $data['active_sidebar'] = $this->session->active_sidebar;
         $data['factoring'] = $this->session->factoring;
@@ -155,6 +157,7 @@ class Factoring extends BaseController
         
         $data['views_page'] = $this->session->views_page;
         $data['factoring'] = $model->find($id);
+        $data['user_group'] = $this->session->user_group ?? 'user';
         $data['user_full_name'] = $this->session->user_full_name;
         $data['active_sidebar'] = $this->session->active_sidebar;
         $data['message'] = $this->session->message;
@@ -373,6 +376,7 @@ class Factoring extends BaseController
         $factoring_model = new FactoringModel();
         $data['factoring'] = $factoring_model->where('id', $id)->first();
         $data['views_page'] = $this->session->views_page;
+        $data['user_group'] = $this->session->user_group ?? 'user';
         $data['user_full_name'] = $this->session->user_full_name;
         $data['active_sidebar'] = $this->session->active_sidebar;
         $data['message'] = $this->session->message;

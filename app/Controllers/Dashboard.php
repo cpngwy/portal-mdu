@@ -27,7 +27,7 @@ class Dashboard extends BaseController
         if (!auth()->loggedIn()) {
             return redirect()->to('login');
         }
-
+        $data['user_group'] = $this->session->user_group ?? 'user';
         $data['user_full_name'] = $this->session->user_full_name;
         $data['active_sidebar'] = $this->session->active_sidebar;
         $data['get_gross_amount_monthly'] = $this->get_gross_amount_monthly();

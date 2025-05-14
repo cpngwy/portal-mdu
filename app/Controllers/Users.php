@@ -29,6 +29,7 @@ class Users extends BaseController
         
         $users = model(UserModel::class)->findAll();
         $data['users'] = $users;
+        $data['user_group'] = $this->session->user_group ?? 'user';
         $data['user_full_name'] = $this->session->user_full_name;
         $data['active_sidebar'] = $this->session->active_sidebar;
         $data['views_page'] = 'index';
@@ -81,6 +82,7 @@ class Users extends BaseController
         $data['sellers'] = $seller_model->findAll();
         $data['buyers'] = $buyer_model->findAll();
         $data['title_header'] = 'User Registration';
+        $data['user_group'] = $this->session->user_group ?? 'user';
         $data['user_full_name'] = $this->session->user_full_name;
         $data['active_sidebar'] = $this->session->active_sidebar;
         $data['views_page'] = 'new';
@@ -114,6 +116,7 @@ class Users extends BaseController
         $data['user'] = $user->find($id);
         $data['sellers'] = $seller_model->findAll();
         $data['buyers'] = $buyer_model->findAll();
+        $data['user_group'] = $this->session->user_group ?? 'user';
         $data['user_full_name'] = $this->session->user_full_name;
         $data['active_sidebar'] = $this->session->active_sidebar;
         $data['views_page'] = 'edit';
@@ -174,6 +177,7 @@ class Users extends BaseController
     public function profile()
     {
         $user = new UserModel();
+        $data['user_group'] = $this->session->user_group ?? 'user';
         $data['user_full_name'] = $this->session->user_full_name;
         $data['active_sidebar'] = $this->session->active_sidebar;
         $data['views_page'] = 'profile';
