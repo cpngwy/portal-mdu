@@ -12,11 +12,13 @@
     <link rel="icon" type="image/x-icon" href="/themes/sb-admin-2-gh-pages/img/CPN-Fav-ICON.png">
     <?= $this->renderSection('pageStyles') ?>
 </head>
-
-<body class="bg-light">
+<!-- style="background-image: url('/themes/sb-admin-2-gh-pages/img/custom-svg/undraw_secure-login_m11a.svg'); background-size: 94% 94%; background-repeat: no-repeat; background-attachment: fixed;" -->
+<body class="bg-light mt-2">
 
     <main role="main" class="container">
+
         <?= $this->renderSection('main') ?>
+    
     </main>
 
 <?= $this->renderSection('pageScripts') ?>
