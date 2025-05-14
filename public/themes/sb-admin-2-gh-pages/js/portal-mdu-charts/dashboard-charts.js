@@ -5,12 +5,12 @@ Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,Bli
     var myPieChart = new Chart(ctx, {
         type: 'doughnut',
         data: {
-            labels: ["Pending", "Processing", "Approved", "Declined"],
+            labels: ["Pending", "Processing", "Confirmed", "Approved", "Declined"],
             datasets: [{
-            data: status_percentage(),
-            backgroundColor: ['#858796', '#4e73df', '#1cc88a', '#e74a3b'],
-            hoverBackgroundColor: ['#c9cecd', '#addae1', '#9ce6cb', '#fea9a1'],
-            hoverBorderColor: "rgba(234, 236, 244, 1)",
+                data: status_percentage(),
+                backgroundColor: ['#858796', '#4e73df', '#36b9cc', '#1cc88a', '#e74a3b'],
+                hoverBackgroundColor: ['#c9cecd', '#addae1', '#04749e', '#9ce6cb', '#fea9a1'],
+                hoverBorderColor: "rgba(234, 236, 244, 1)",
             }],
         },
         options: {
