@@ -1,7 +1,4 @@
-<div class="col-xl-7">
-    <?= view('Factoring/form_errors', ['errors' => $errors, 'message' => $message]);?>
-</div>
-<div class="col-xl-7">
+
     <div class="card mb-4">
         <div class="card-header">
             <h6 class="m-0 font-weight-bold text-primary"><?= ucfirst($active_sidebar)?> Invoice Upload</h6>
@@ -15,4 +12,3 @@
             </form>
         </div>
     </div>
-</div>

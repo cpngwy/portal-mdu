@@ -29,7 +29,7 @@
             <div class="card mb-4 bg-danger text-white shadow" id="card-message">
                 <div class="card-body">
                     Warning
-                    <div class="text-white-50 medium"><?php echo $error;?></div>
+                    <div class="text-white-50 medium"><?php echo $error ?? 'something went wrong';?></div>
                 </div>
             </div>
 -

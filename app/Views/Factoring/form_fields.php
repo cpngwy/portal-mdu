@@ -63,6 +63,7 @@
 <!-- end of create form -->
 <!-- start of edit form -->
 <?php if($views_page == 'edit'):?>
+<?php $readonly_status = ['processing', 'completed', 'approved', 'declined'];?>
     <div class="col-md-6">
     <label class="small mb-1">Supplier</label>
     <select name="seller_id" id="seller_id" class="form-control" readonly required>
@@ -85,7 +86,7 @@
 </div>
 <div class="col-md-3">
     <label class="small mb-1">Language</label>
-    <select name="language" id="language" class="tom-select-dropdown" required>
+    <select name="language" id="language" class="tom-select-dropdown" required <?php echo in_array($factoring['status'], $readonly_status) ? 'readonly' : '';?>>
         <?php foreach($language as $lang):?>
             <option value="<?= $lang ?>"><?= $lang ?></option>
         <?php endforeach;?>
@@ -93,27 +94,27 @@
 </div>
 <div class="col-md-6">
     <label class="small mb-1">Payment Method</label>
-    <select name="payment_method" id="payment_method" class="form-control" required>
+    <select name="payment_method" id="payment_method" class="form-control" required <?php echo in_array($factoring['status'], $readonly_status) ? 'readonly' : ''; ?>>
         <option value="invoice">Invoice</option>
     </select>
 </div>
 <div class="col-md-6 mb-2">
     <label class="small mb-1">Currency</label>
-    <select name="currency" id="currency" class="form-control" required>
+    <select name="currency" id="currency" class="form-control" required <?php echo in_array($factoring['status'], $readonly_status) ? 'readonly' : ''; ?>>
         <option value="EUR">EUR</option>
     </select>
 </div>
 <div class="col-md-4">
     <label class="small mb-1">Gross Amount (Cents)</label>
-    <input type="number" name="gross_amount_cents" class="form-control text-right" value="<?= $factoring['gross_amount_cents'] ?? ''?>" required>
+    <input type="number" name="gross_amount_cents" class="form-control text-right" value="<?= $factoring['gross_amount_cents'] ?? ''?>" required <?php echo in_array($factoring['status'], $readonly_status) ? 'readonly' : ''; ?>>
 </div>
 <div class="col-md-4">
     <label class="small mb-1">Total Discount (Cents)</label>
-    <input type="number" name="total_discount_cents" class="form-control text-right" value="<?= $factoring['total_discount_cents'] ?? ''?>" required>
+    <input type="number" name="total_discount_cents" class="form-control text-right" value="<?= $factoring['total_discount_cents'] ?? ''?>" required <?php echo in_array($factoring['status'], $readonly_status) ? 'readonly' : ''; ?>>
 </div>
 <div class="col-md-4">
     <label class="small mb-1">Net Term</label>
-    <input type="number" name="net_term" class="form-control text-right" value="<?= $factoring['net_term'] ?? ''?>" required>
+    <input type="number" name="net_term" class="form-control text-right" value="<?= $factoring['net_term'] ?? ''?>" required <?php echo in_array($factoring['status'], $readonly_status) ? 'readonly' : ''; ?>>
 </div>
 <div class="col-md-12 mx-auto mt-2">
     <div class="card">
@@ -184,17 +185,16 @@
         <div class="card-body row g-3">
             <div class="col-md-7">
                 <label class="small mb-1">Invoice file</label>
-                <input type="file" name="file" class="form-control" value="<?= $factoring['file'] ?? ''?>">
+                <input type="text" name="file" class="form-control" value="<?= $factoring['file'] ?? ''?>" readonly>
             </div>
             <div class="col-md-5">
                 <label class="small mb-1">Invoice Issued At</label>
-                <input type="datetime-local" name="invoice_issued_at" class="form-control" value="<?= $factoring['invoice_issued_at'] ?? ''?>" required>
+                <input type="datetime-local" name="invoice_issued_at" class="form-control" value="<?= $factoring['invoice_issued_at'] ?? ''?>" readonly>
             </div>
             <div class="col-md-12">
                 <label class="small mb-1">Invoice Url</label>
-                <input type="url" name="invoice_url" class="form-control" value="<?= $factoring['invoice_url'] ?? 'https://example.com/file.pdf'?>" required>
+                <input type="text" name="invoice_url" class="form-control" value="<?= $factoring['invoice_url'] ?? ''?>" readonly>
             </div>
-            
         </div>
     </div>
 </div>
