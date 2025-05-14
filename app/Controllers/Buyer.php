@@ -19,7 +19,7 @@ class Buyer extends BaseController
      */
     public function index()
     {
-        
+        $data['user_group'] = $this->session->user_group ?? 'user';
         $data['user_full_name'] = $this->session->user_full_name;
         $data['active_sidebar'] = $this->session->active_sidebar;
         $data['views_page'] = $this->session->views_page;
@@ -42,6 +42,7 @@ class Buyer extends BaseController
      */
     public function add()
     {
+        $data['user_group'] = $this->session->user_group ?? 'user';
         $data['user_full_name'] = $this->session->user_full_name;
         $data['active_sidebar'] = $this->session->active_sidebar;
         $data['views_page'] = $this->session->views_page;
@@ -98,6 +99,7 @@ class Buyer extends BaseController
      */
     public function edit($id)
     {
+        $data['user_group'] = $this->session->user_group ?? 'user';
         $data['user_full_name'] = $this->session->user_full_name;
         $data['active_sidebar'] = $this->session->active_sidebar;
         $data['views_page'] = $this->session->views_page;
