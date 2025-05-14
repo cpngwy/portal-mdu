@@ -51,6 +51,7 @@ $routes->post('buyerrepresentative/store/(:num)', 'BuyerRepresentative::store/$1
 $routes->post('sellerbuyer/store/(:num)', 'SellerBuyer::store/$1', ['filter' => 'auth']);
 $routes->post('file/upload/(:num)/(:any)/(:any)', 'FileUpload::upload/$1/$2/$3', ['filter' => 'auth']);
 $routes->get('factoring/upload/(:num)', 'Factoring::upload/$1', ['filter' => 'auth']);
+$routes->get('factoring/link/(:any)', 'Factoring::file_link/$1', ['filter' => 'auth']);
 
 
 service('auth')->routes($routes);
