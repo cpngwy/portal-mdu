@@ -5,7 +5,7 @@
                         <span><img width="140px" src="/themes/sb-admin-2-gh-pages/img/compaynet_logo.png" alt=""> 2025</span>
                     </div>
                     <div class="text-center my-2">
-                        <span>Contact Us: <a href="mailto:administration@compaynet.com" class="href">administration@compaynet.com</a></span>
+                        <span>Contact Us: <a href="mailto:administration@compaynet.com" class="href">administration@compaynet-b2b.com</a></span>
                     </div>
                 </div>
             </footer>
