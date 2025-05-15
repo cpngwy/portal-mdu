@@ -21,7 +21,7 @@ class Factoring extends BaseController
 {
     /**
      * The index method is responsible for rendering the index view, which displays the list of
-     * all factorings. It first checks if the user is logged in, if not it redirects to the login page.
+     * all factoring. It first checks if the user is logged in, if not it redirects to the login page.
      * Then it sets up the data to be passed to the view, including the user's full name,
      * the active sidebar item, the page being viewed, and the message to be displayed.
      * Finally, it renders the view.
