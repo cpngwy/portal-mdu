@@ -1,4 +1,9 @@
 <?php if($views_page == 'new'):?>
+<!-- Form Group (Username)-->
+<div class="col-md-10">
+    <label class="small mb-1" for="username">Username</label>
+    <input class="form-control" id="username" name="username" type="text" placeholder="Enter username" value="<?php echo set_value('username');?>" required>
+</div>
 <!-- Form Group (email address)-->
 <div class="col-md-10">
     <label class="small mb-1" for="email">Email</label>
