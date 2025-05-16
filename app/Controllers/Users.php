@@ -273,42 +273,50 @@ class Users extends BaseController
      * Handles the creation of a new user.
      *
      * This function validates the given request data against the given rules.
-     * If the validation fails, it redirects the user back to the register page
+     * If the validation fails, it redirects the user back to the new user page
      * with the input data and the errors encountered during the validation.
      *
-     * If the validation succeeds, it creates a new user and saves the user to
-     * the database.
+     * If the validation succeeds, it creates a new user with the given data and
+     * saves the user to the database.
      *
-     * @return string The rendered view of the user edit page with a success message.
+     * @return string The rendered view of the user new page with a success message.
      */
     public function register_user()
     {
-        $users = $this->getUserProvider();
-
-        // Validate here first, since some things,
-        // like the password, can only be validated properly here.
+        $users = auth()->getProvider();
+        // Define validation rules
         $rules = $this->getValidationRules();
 
+        // Validate the request
         if (! $this->validateData($this->request->getPost(), $rules, [], config('Auth')->DBGroup)) {
             return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
         }
-
-        // Save the user
+        
+        // Only take allowed fields
         $allowedPostFields = array_keys($rules);
-        $user              = $this->getUserEntity();
-        $user->fill($this->request->getPost($allowedPostFields));
+        $postData = $this->request->getPost($allowedPostFields);
 
+        // Create user entity and fill with allowed data
+        $user = $this->getUserEntity(); // returns instance of User entity
+
+        // Ensure password is hashed
+        if (!empty($postData['password'])) {
+            $user->password = $postData['password'];
+        }
+
+        $user->fill($postData);
+       
         try {
+            // Save user
             $users->save($user);
+            // To get the complete user object with ID, we need to get from the database
+            $user = $users->findById($users->getInsertID());
+            // Add to default group
+            $users->addToDefaultGroup($user);
+            return redirect()->to('user/new')->with('message', 'User has been created.');
         } catch (ValidationException $e) {
             return redirect()->back()->withInput()->with('errors', $users->errors());
         }
-        // To get the complete user object with ID, we need to get from the database
-        $user = $users->findById($users->getInsertID());
-        // Add to default group
-        $users->addToDefaultGroup($user);
-        return redirect()->to('users/new')->with('message','User has been created.');
-
     }
 
     /**
@@ -374,3 +382,4 @@ class Users extends BaseController
         return $rules->getRegistrationRules();
     }
 }
+

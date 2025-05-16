@@ -17,7 +17,7 @@
                 <div class="card">
                     <div class="card-header">Account Details</div>
                     <div class="card-body">
-                        <form action="<?= base_url('users/register') ?>" method="post" class="row g-3">
+                        <form action="<?= base_url('user/register') ?>" method="post" class="row g-3">
                         <?= csrf_field() ?>
                         <?php echo view('Users/form_fields.php', ['views_page' => $views_page]);?>
                         <!-- Save changes button-->

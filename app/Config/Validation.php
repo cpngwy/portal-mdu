@@ -72,5 +72,17 @@ class Validation extends BaseConfig
             'label' => 'Auth.passwordConfirm',
             'rules' => 'required|matches[password]',
         ],
+        'first_name' => [
+            'label' => 'Auth.firstName',
+            'rules' => 'required|min_length[2]',
+        ],
+        'last_name' => [
+            'label' => 'Auth.lastName',
+            'rules' => 'required|min_length[2]',
+        ],
+        'seller_id' => [
+            'label' => 'Auth.sellerId',
+            'rules' => 'required|numeric',
+        ],
     ];
 }
